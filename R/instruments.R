@@ -36,10 +36,10 @@ invert.chord <- function(chord, full.inversion) {
 #'   all(overtones(1, sine, 440, SECOND) == sine(440, SECOND))
 #'
 #'   # A harmonic series
-#'   overtones(1:5, sine, 440, SECOND)
+#'   overtones(1:5, sine, 440, SECOND/100)
 #'
 #'   # An inharmonic series
-#'   overtones(runif(5, 1, 3), sine, 440, SECOND)
+#'   overtones(runif(5, 1, 3), sine, 440, SECOND/100)
 overtones <- function(multiples, generator, frequency, duration) {
   add <- function(a, b) a + b
   f <- function(x) generator(frequency * x, duration)
