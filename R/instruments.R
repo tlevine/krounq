@@ -24,3 +24,22 @@ invert.chord <- function(chord, full.inversion) {
   # This makes it easy to select the root note.
   c(top, bottom) + octave
 }
+
+
+#' Produce sounds with overtones
+#' @param multiples Multiples of the base frequency for overtones
+#' @param generator sine, sawtooth, square
+#' @param frequency Frequency (440 is middle A.)
+#' @param duration Duration in samples (probably 44100 samples per second)
+#' @examples
+#'   # A plain sine wave
+#'   all(overtones(1, sine, 440, SECOND) == sine(440, SECOND))
+#'
+#'   # A harmonic series
+#'   overtones(1:5, sine, 440, SECOND)
+#'
+#'   # An inharmonic series
+#'   overtones(runif(5, 1, 3), sine, 440, SECOND)
+overtones <- function(multiples, generator, frequency, duration)
+  Reduce(function(a, b) a + b,
+         lapply(multiples, function(x) generator(frequency * x, duration)))

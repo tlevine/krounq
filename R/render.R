@@ -23,11 +23,14 @@ wave <- function(duration, left = empty.channel, right = empty.channel,
 #' Play a one-second clip of the function, if no player is specified, or
 #' pass the arguments to tuneR::play if a player is specified.
 #' @examples
+#'   play(merge(curry(sine, P.n(49)), curry(sawtooth, P.n(+49+3))))
 #'   play(merge(curry(sawtooth, 440), curry(sine, 440)))
 #'   play(2^8 * Wave(sawtooth(440, 44100), samp.rate = 44100, bit = 16), 'play')
 play <- function(object, player = NULL, ...) {
   if (is.null(player))
-    tuneR::play(wave(SECOND, left = object), 'play')
+    tuneR::play(tuneR::normalize(wave(SECOND, left = object, bit = 16),
+                                 unit = '16'),
+                'play')
   else
     tuneR::play(object, player, ...)
 }
