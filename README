@@ -1,1 +1,4 @@
 Audio synthesis in R
+
+play(curry(overtones, rnorm(10), square, 40))
+play(curry(overtones, 1:10, square, 440))
