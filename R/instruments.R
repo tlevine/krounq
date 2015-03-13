@@ -40,6 +40,8 @@ invert.chord <- function(chord, full.inversion) {
 #'
 #'   # An inharmonic series
 #'   overtones(runif(5, 1, 3), sine, 440, SECOND)
-overtones <- function(multiples, generator, frequency, duration)
-  Reduce(function(a, b) a + b,
-         lapply(multiples, function(x) generator(frequency * x, duration)))
+overtones <- function(multiples, generator, frequency, duration) {
+  add <- function(a, b) a + b
+  f <- function(x) generator(frequency * x, duration)
+  Reduce(add, lapply(multiples, f)) / length(multiples)
+}
