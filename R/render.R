@@ -17,8 +17,8 @@ wave <- function(duration, left = empty.channel, right = empty.channel,
                  sampling.rate = SECOND, bit = 16,
                  fade = fade.quadratic)
   2^(bit/2) * fade(duration) *
-    Wave(left(duration), right(duration),
-         samp.rate = sampling.rate, bit = bit)
+    tuneR::Wave(left(duration), right(duration),
+                samp.rate = sampling.rate, bit = bit)
 
 #' Play a one-second clip of the function, if no player is specified, or
 #' pass the arguments to tuneR::play if a player is specified.
