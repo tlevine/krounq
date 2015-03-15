@@ -1,15 +1,13 @@
 SECOND <- 44100
 
-empty.channel <- function(.) numeric(0)
-
 #' Generate a tuneR wave from an instrument
 #' @param duration Duration in samples (probably 44100 samples per second)
 #' @param left channel wave
 #' @param right channel wave
-wave <- function(left = empty.channel, right = empty.channel,
+wave <- function(left = numeric(0), right = numeric(0),
                  sampling.rate = SECOND, bit = 16,
                  fade = fade.quadratic)
-  tuneR::Wave(left(duration), right(duration),
+  tuneR::Wave(left, right,
               samp.rate = sampling.rate, bit = bit)
 
 #' Play a one-second clip of the function, if no player is specified, or
