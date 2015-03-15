@@ -2,6 +2,7 @@ SECOND <- 44100
 
 fade.polynomial <- function(power, duration)
   seq(1, 0, length.out = duration) ^ power
+fade.none <- curry(fade.polynomial, 0)
 fade.sqrt <- curry(fade.polynomial, 1/2)
 fade.linear <- curry(fade.polynomial, 1)
 fade.quadratic <- curry(fade.polynomial, 2)
@@ -16,7 +17,7 @@ empty.channel <- function(.) numeric(0)
 wave <- function(duration, left = empty.channel, right = empty.channel,
                  sampling.rate = SECOND, bit = 16,
                  fade = fade.quadratic)
-  2^(bit/2) * fade(duration) *
+  fade(duration) *
     tuneR::Wave(left(duration), right(duration),
                 samp.rate = sampling.rate, bit = bit)
 

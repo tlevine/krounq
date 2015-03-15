@@ -14,3 +14,8 @@ Why are these different?
 
 play(2^12 * tuneR::Wave(left = sine(440, SECOND/4), samp.rate = SECOND, bit = 16), 'play')
 play(2^12 * tuneR::sine(440, SECOND/4), 'play')
+
+
+Organ
+
+play(tuneR::normalize(wave(SECOND, curry(multiple.frequencies, 440 * (1:6), sawtooth), fade = fade.none), unit = '16'), 'play')
