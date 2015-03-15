@@ -25,6 +25,9 @@ track <- function(frequencies, starts, durations = 0.5,
   waveform
 }
 
+play(track(P.n(49 + scales$major), c(seq(1, 3, length.out = 7))))
+
+
 # Eight beats
 clave.starts <- c(2, 3, 5, 6.5, 8)
 clave.durations <- c(1, 1, 1.5, 0.5, 1)
