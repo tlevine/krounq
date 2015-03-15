@@ -24,12 +24,20 @@ invert.chord <- function(chord, full.inversion) {
   c(top, bottom) + octave
 }
 
-track <- function(frequencies, starts, durations = 0.5,
-                  instrument = sinesynth,
-                  bpm = 240, beats = 8, sampling.rate = SECOND) {
+#' Generate a sequence of a particular instrument
+#' @param frequencies Frequencies of the notes
+#' @param starts Start beats of the notes
+#' @param durations Lengths of the notes, in beats
+#' @param instrument Instrument to play the notes with
+#' @param tempo Tempo in bpm
+#' @param beats Number of beats in the resulting sequence
+#' @param sampling.rate Sampling rate for the resulting wave
+sequence <- function(frequencies, starts, durations = 0.5,
+                     instrument = sinesynth,
+                     tempo = 240, beats = 8, sampling.rate = SECOND) {
   notes <- data.frame(frequency = frequencies, start = starts, duration = durations)
 
-  n.samples <- 8 * sampling.rate * 60 / bpm
+  n.samples <- 8 * sampling.rate * 60 / tempo
   beat <- seq(1, 9, length.out = n.samples)
   waveform <- rep(0, n.samples)
   for (i in 1:nrow(notes)) {
