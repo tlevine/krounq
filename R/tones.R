@@ -1,8 +1,10 @@
+tau <- 2 * pi
+
 #' Generate a sine wave.
 #' @param frequency Frequency (440 is middle A.)
 #' @param duration Duration in samples (probably 44100 samples per second)
 sine <- function(frequency, duration)
-  sin(frequency * (1:duration))
+  sin(tau * frequency * (1:duration))
 
 #' Generate a sawtooth wave.
 #' @param frequency Frequency (440 is middle A.)

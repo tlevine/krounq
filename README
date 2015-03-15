@@ -9,3 +9,8 @@ the A major scale?
     f <- function(x) 2^10 * tuneR::Wave(sine(x, SECOND/2))
     xs <- P.n(49 - P8 + c(scales$major, P8 + scales$major, P8 + P8))
     tuneR::play(Reduce(tuneR::bind, lapply(xs, f)), 'play')
+
+Why are these different?
+
+play(2^12 * tuneR::Wave(left = sine(440, SECOND/4), samp.rate = SECOND, bit = 16), 'play')
+play(2^12 * tuneR::sine(440, SECOND/4), 'play')
