@@ -18,11 +18,11 @@ track <- function(pitches, starts, durations = 0.5,
   c <- length(durations)
   if (a %% b != 0 || b %% c != 0 || c %% a != 0 || a %% c != 0 || c %% b != 0 || b %% a != 0)
     stop('Pitches, starts, and durations must have the same length in clock arithmetic.')
+
   n.samples <- sampling.rate * 8 * bpm / 60
-  eight.beat.add.note(n.samples)
-}  
-eight.beat.add.note <- function(n.samples, start, duration, pitch, instrument, fade) {
   beat <- seq(1, 9, length.out = n.samples)
+
+  for (i in 1:max(a, b, c))
   selector <- beat >= start & beat < (start + duration)
   waveform <- rep(0, n.samples)
   waveform[selector] <- instrument(sum(selector)) * fade(sum(selector))
