@@ -22,8 +22,6 @@ scales <- list(major = s(W, W, H, W, W, W, H),
                dorian = s(W, H, W, W, W, H, W),
                mixolydian = s(W, W, H, W, W, H, W))
 
-detach(intervals)
-
 for (x in c('intervals', 'chords', 'scales')) {
   y <- get(x)
   save(y, file = paste0('data/', x, '.RData'))
