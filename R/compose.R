@@ -32,6 +32,10 @@ invert.chord <- function(chord, full.inversion) {
 #' @param tempo Tempo in bpm
 #' @param beats Number of beats in the resulting sequence
 #' @param sampling.rate Sampling rate for the resulting wave
+#' @examples
+#' onbeat.offbeat.23 <- track(110,
+#'                            c(2, 3, 5, 6.5, 8),
+#'                            durations = c(1, 1, 1.5, 0.5, 1) / 4)
 sequence <- function(frequencies, starts, durations = 0.5,
                      instrument = sinesynth,
                      tempo = 240, beats = 8, sampling.rate = SECOND) {
