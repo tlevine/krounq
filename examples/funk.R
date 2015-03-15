@@ -5,11 +5,22 @@
 # https://en.wikipedia.org/wiki/Clave_%28rhythm%29
 # https://en.wikipedia.org/wiki/Guajeo
 
+eight.beats <- function(starts, durations, pitches, instrument, fade) {
+  
+}  
+eight.beat.add.note <- function(n.samples, start, duration, pitch, instrument, fade) {
+  beat <- seq(1, 9, length.out = n.samples)
+  selector <- beat >= start & beat < (start + duration)
+  waveform <- rep(0, n.samples)
+  waveform[selector] <- instrument(sum(selector)) * fade(sum(selector))
+  waveform
+}
+
 # Eight beats
 clave.starts <- c(2, 3, 5, 6.5, 8)
 clave.durations <- c(1, 1, 1.5, 0.5, 1)
 clave.pitches <- scales$mixolydian[c(1, 3, 5)]
-clave.pitch <- curry(square, 220)
+clave.instrument <- curry(square, 220)
 clave.fade <- function(duration) {
   elbow <- round(duration / 8)
   elbow.amplitude <- 0.2
