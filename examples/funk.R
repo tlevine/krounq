@@ -5,8 +5,9 @@
 # https://en.wikipedia.org/wiki/Clave_%28rhythm%29
 # https://en.wikipedia.org/wiki/Guajeo
 
-eight.beats <- function(starts, durations, pitches, instrument, fade) {
-  
+eight.beats <- function(bpm, starts, durations, pitches, instrument, fade) {
+  n.samples <- SECONDS * 8 * bpm / 60
+  eight.beat.add.note(n.samples)
 }  
 eight.beat.add.note <- function(n.samples, start, duration, pitch, instrument, fade) {
   beat <- seq(1, 9, length.out = n.samples)
