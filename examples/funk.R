@@ -13,12 +13,6 @@ source('generate-data.R')
 track <- function(pitches, starts, durations = 0.5,
                   instrument = sinesynth,
                   bpm = 120, beats = 8, sampling.rate = SECONDS) {
-  a <- length(pitches)
-  b <- length(starts)
-  c <- length(durations)
-  if (a %% b != 0 || b %% c != 0 || c %% a != 0 || a %% c != 0 || c %% b != 0 || b %% a != 0)
-    stop('Pitches, starts, and durations must have the same length in clock arithmetic.')
-
   df <- data.frame(pitch = pitches, start = starts, duration = durations)
 
   n.samples <- sampling.rate * 8 * bpm / 60
