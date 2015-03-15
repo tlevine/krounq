@@ -1,9 +1,16 @@
+library(devtools)
+unloadNamespace('devtools')
+devtools::load_all()
+source('generate-data.R')
+
 # https://en.wikipedia.org/wiki/Funk
 # https://en.wikipedia.org/wiki/Dorian_mode
 # https://en.wikipedia.org/wiki/Mixolydian_mode
 # https://en.wikipedia.org/wiki/Ostinato#Vamp
 # https://en.wikipedia.org/wiki/Clave_%28rhythm%29
 # https://en.wikipedia.org/wiki/Guajeo
+
+phrase <- function(bpm = 120, beats = 8)
 
 eight.beats <- function(bpm, starts, durations, pitches, instrument, fade) {
   n.samples <- SECONDS * 8 * bpm / 60
