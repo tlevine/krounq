@@ -10,17 +10,17 @@ source('generate-data.R')
 # https://en.wikipedia.org/wiki/Clave_%28rhythm%29
 # https://en.wikipedia.org/wiki/Guajeo
 
-track <- function(pitches, starts, durations = 0.5,
+track <- function(frequencies, starts, durations = 0.5,
                   instrument = sinesynth,
-                  bpm = 120, beats = 8, sampling.rate = SECONDS) {
-  df <- data.frame(pitch = pitches, start = starts, duration = durations)
+                  bpm = 120, beats = 8, sampling.rate = SECOND) {
+  notes <- data.frame(frequency = frequencies, start = starts, duration = durations)
 
   n.samples <- sampling.rate * 8 * bpm / 60
   beat <- seq(1, 9, length.out = n.samples)
   waveform <- rep(0, n.samples)
-  for (i in 1:nrow(df)) {
-    selector <- beat >= start & beat < (start + duration)
-    waveform[selector] <- instrument(df[i,'pitch'], sum(selector))
+  for (i in 1:nrow(notes)) {
+    selector <- beat >= notes[i,'start'] & beat < (notes[i,'start'] + notes[i,'duration'])
+    waveform[selector] <- instrument(notes[i,'frequency'], sum(selector))
   }
   waveform
 }
