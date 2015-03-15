@@ -2,7 +2,7 @@ library(devtools)
 unloadNamespace('devtools')
 devtools::load_all()
 
-source('generate-data/intervals.R')
+source('generate-data.R')
 
 # play(curry(overtones, c(1.2,0.8,2.1,2.7,1,0.5,3), sawtooth, 329.6276))
 
