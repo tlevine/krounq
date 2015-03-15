@@ -15,7 +15,7 @@ chords$'m7+' = c(chords$aug, m7)
 
 W <- 2
 H <- 1
-s <- function(xs) cumsum(c(0, xs)[1:7])
+s <- function(xs) cumsum(c(0, xs)[1:7]) # Ignore last note.
 scales <- list(major = s(W, W, H, W, W, W, H),
                harmonic.minor = s(W, H, W, W, H, W + H, H),
                natural.minor = s(W, H, W, W, W, H, W),
