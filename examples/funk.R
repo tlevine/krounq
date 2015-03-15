@@ -9,9 +9,7 @@
 clave.starts <- c(2, 3, 5, 6.5, 8)
 clave.durations <- c(1, 1, 1.5, 0.5, 1)
 clave.pitches <- scales$mixolydian[c(1, 3, 5)]
-clave.pitch <- curry(overtones,
-                     c(7.08, 1.72, 4.07, 1.33, 0.82, 1.86, 4.16, 0.97, 6.83, 0.88),
-                     sine, 440)
+clave.pitch <- curry(square, 220)
 clave.fade <- function(duration) {
   elbow <- round(duration / 8)
   elbow.amplitude <- 0.2
