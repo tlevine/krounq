@@ -16,10 +16,11 @@ chords$'m7+' = c(chords$aug, m7)
 W <- 2
 H <- 1
 s <- function(xs) cumsum(c(0, xs)[1:7])
-scales <- list(natural.minor = c(P1, m2, m3, P4, P5, m6, m7),
-               dorian = cumsum(c(P1, W, H, W, W, W, H)),
-               mixolydian = cumsum(c(P1, W, W, H, W, W, H)),
-               major = c(P1, M2, M3, P4, P5, M6, M7))
+scales <- list(major = s(W, W, H, W, W, W, H),
+               harmonic.minor = s(W, H, W, W, H, W + H, H),
+               natural.minor = s(W, H, W, W, W, H, W),
+               dorian = s(W, H, W, W, W, H, W),
+               mixolydian = s(W, W, H, W, W, H, W))
 
 detach(intervals)
 
