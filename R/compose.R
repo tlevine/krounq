@@ -24,15 +24,18 @@ invert.chord <- function(chord, full.inversion) {
   c(top, bottom) + octave
 }
 
+track <- function(frequencies, starts, durations = 0.5,
+                  instrument = sinesynth,
+                  bpm = 240, beats = 8, sampling.rate = SECOND) {
+  notes <- data.frame(frequency = frequencies, start = starts, duration = durations)
 
-#' Merge some instrument curves
-#' @param ... functions from duration to air speaker position wave numbers
-#' @examples
-#'   merge(curry(sine, 440), curry(sine, 220))(100)
-merge <- function(...) {
-  add <- function(a,b) a + b 
-  function(duration) {
-    f <- function(instrument) instrument(duration)
-    Reduce(add, lapply(list(...), f))
+  n.samples <- 8 * sampling.rate * 60 / bpm
+  beat <- seq(1, 9, length.out = n.samples)
+  waveform <- rep(0, n.samples)
+  for (i in 1:nrow(notes)) {
+    selector <- beat >= notes[i,'start'] & beat < (notes[i,'start'] + notes[i,'duration'])
+    waveform[selector] <- instrument(notes[i,'frequency'], sum(selector))
   }
+  waveform
 }
+
