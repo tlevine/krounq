@@ -16,7 +16,7 @@ instrument <- function(tone, fade)
   function(frequency, duration)
     tone(frequency, duration) * fade(duration)
 
-harpsicord <- instrument(curry(overtones, 1:13, sawtooth), fade.sqrt)
+harpsicord <- instrument(curry(overtones, 1:13, sawtooth), fade.quadratic)
 xylophone <- instrument(curry(overtones, c(1, 2, 4, 8), sine), fade.cubic)
 clave <- instrument(square, fade.elbow)
 saxaphone <- instrument(curry(overtones, seq(1, 2^4, 2), square), fade.sqrt)

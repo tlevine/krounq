@@ -1,3 +1,5 @@
+# Sampling rate is always a second
+
 tau <- 2 * pi
 
 #' Generate a sine wave.
@@ -9,8 +11,8 @@ sine <- function(frequency, duration, samp.rate = SECOND)
 #' Generate a sawtooth wave.
 #' @param frequency Frequency (440 is middle A.)
 #' @param duration Duration in samples (probably 44100 samples per second)
-sawtooth <- function(frequency, duration)
-  seq(1, 2 * frequency * duration, length.out = duration) %% 2
+sawtooth <- function(frequency, duration, samp.rate = SECOND)
+  seq(1, 2 * frequency * duration / samp.rate, length.out = duration) %% 2 - 1
 
 #' Generate a square wave.
 #' @param frequency Frequency (440 is middle A.)
