@@ -17,8 +17,8 @@ sawtooth <- function(frequency, duration, samp.rate = SECOND)
 #' Generate a square wave.
 #' @param frequency Frequency (440 is middle A.)
 #' @param duration Duration in samples (probably 44100 samples per second)
-square <- function(frequency, duration)
-  sign(seq(1, frequency * duration, length.out = duration) %% 1 - 0.5)
+square <- function(frequency, duration, samp.rate = SECOND)
+  sign(seq(1, frequency * duration / samp.rate, length.out = duration) %% 1 - 0.5)
 
 silence <- function(duration) rep(0, duration)
 
