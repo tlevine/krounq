@@ -12,9 +12,13 @@ fade.elbow <- function(duration, elbow.position = 1/8, elbow.amplitude = 1/5) {
     seq(elbow.amplitude, 0, length.out = duration - elbow.position.absolute))
 }
 
-instrument <- function(tone, fade)
+#' @param tone tone generator
+#' @param ... fade functions
+instrument <- function(tone, ...)
   function(frequency, duration)
-    tone(frequency, duration) * fade(duration)
+    Reduce(function(a,b) a * b,
+           lapply(list(...), function(f) f(duration)),
+           tone(frequency, duration))
 
 harpsicord <- instrument(curry(overtones, 1:13, sawtooth), fade.quadratic)
 xylophone <- instrument(curry(overtones, c(1, 2, 4, 8), sine), fade.cubic)
