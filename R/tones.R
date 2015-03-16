@@ -2,6 +2,19 @@
 
 tau <- 2 * pi
 
+# http://paulbourke.net/fractals/noise/
+white.noise <- function(duration)
+  rnorm(duration, sd = 1/3)
+
+brownian.noise <- brown.noise <- red.noise <- function(duration)
+  cumsum(white.noise(duration) * 4)
+
+pink.noise <- function(duration) {
+  a <- seq(length.out = duration) ^ (-1/2)
+  b <- a * duration / (2 * sum(a))
+  Re(fft(fft(rnorm(duration, sd = 1/3)) * b, inverse = TRUE))
+}
+
 #' Generate a sine wave.
 #' @param frequency Frequency (440 is middle A.)
 #' @param duration Duration in samples (probably 44100 samples per second)
