@@ -41,7 +41,7 @@ sequence <- function(frequencies, starts, durations = 0.5,
                      tempo = 240, beats = 8, sampling.rate = SECOND) {
   notes <- data.frame(frequency = frequencies, start = starts, duration = durations)
 
-  n.samples <- 8 * sampling.rate * 60 / tempo
+  n.samples <- beats * sampling.rate * 60 / tempo
   beat <- seq(1, 9, length.out = n.samples)
   waveform <- rep(0, n.samples)
   for (i in 1:nrow(notes)) {
