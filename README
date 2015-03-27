@@ -22,3 +22,8 @@ play(tuneR::normalize(wave(SECOND, curry(multiple.frequencies, 440 * (1:6), sawt
 
 play(track(P.n(49 + scales$major), c(seq(1, 3, length.out = 7))))
 
+
+Things to look at
+
+* http://www.ghosthack.de/remository/dubstep-samples/
+* https://archive.org/search.php?query=dubstep%20AND%20mediatype%3Aaudio
