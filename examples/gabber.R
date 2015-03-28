@@ -68,7 +68,9 @@ e <- function(f)
            tempo = TEMPO,
            beats = 8)
 
-phrase <- function(key = 30) {
+phrase <- function(key = 30, speed = ) {
+  (round(speed) - 1)
+
   c(e(P.n(key + intervals$P1)), e(P.n(key + intervals$P4))) +
   b * 3
 }
