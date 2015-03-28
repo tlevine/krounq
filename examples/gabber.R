@@ -51,8 +51,8 @@ hihat <- sample.instrument(norm(roland$HHO@left))
 #            5, 6, 6.5, 7, 7.5, 8, 8.5),
 #          durations = 1, instrument = drumlike,
 #          tempo = 205, beats = 8)
-##b <- sequence(durations = .25, instrument = snare,
-#              tempo = 205, beats = 8)
+b <- sequence(durations = 0.5, instrument = snare,
+              tempo = 205, beats = 8)
 #d <- sequence(frequencies = P.n(40 + scales$major[c(1,3,2,1)]),
 #              starts = c(1, 5, 9, 13), durations = 4,
 #              instrument = scratch, tempo = 205, beats = 16)
@@ -66,7 +66,8 @@ e <- function(f)
            beats = 8)
 
 phrase <- function() {
-  c(rep(e(P.n(30 + intervals$P1)), 2), rep(e(P.n(30 + intervals$P4)), 2))
+  c(rep(e(P.n(30 + intervals$P1)), 2), rep(e(P.n(30 + intervals$P4)), 2)) +
+  b
 }
 
 play(phrase())

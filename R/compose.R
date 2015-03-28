@@ -52,7 +52,10 @@ sequence <- function(frequencies = 440, starts = NULL, durations = 0.5,
   waveform <- rep(0, n.samples)
   for (i in 1:nrow(notes)) {
     selector <- beat >= notes[i,'start'] & beat < (notes[i,'start'] + notes[i,'duration'])
-    waveform[selector] <- instrument(notes[i,'frequency'], sum(selector))
+    x <- instrument(notes[i,'frequency'], sum(selector))
+    if (length(x) == 1)
+      stop(paste('Something went wrong: x =', x))
+    waveform[selector] <- x
   }
   waveform[1:n.samples]
 }
