@@ -48,16 +48,16 @@ sequence <- function(frequencies = 440, starts = NULL, durations = 0.5,
   notes <- data.frame(frequency = frequencies, start = starts, duration = durations)
 
   n.samples <- beats * sampling.rate * 60 / tempo
-  beat <- seq(1, beats, length.out = n.samples + 1)
+  beat <- seq(1, beats + 1, length.out = n.samples + 1)
   beat <- beat[-(n.samples + 1)]
   waveform <- rep(0, n.samples)
   for (i in 1:nrow(notes)) {
     selector <- beat >= notes[i,'start'] & beat < (notes[i,'start'] + notes[i,'duration'])
     x <- instrument(notes[i,'frequency'], sum(selector))
-    if (length(x) == 1) {
-      stop(paste('Something went wrong: x =', x))
+    if (sum(selector) > 0) {
+      waveform[selector] <- x
     } else {
-      waveform[selector] <- x# [1:sum(selector)]
+      stop(paste('Something went wrong; x =', x))
     }
   }
   waveform[1:n.samples]

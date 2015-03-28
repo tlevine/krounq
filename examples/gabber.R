@@ -60,7 +60,7 @@ hihat <- sample.instrument(norm(roland$HHO@left))
 
 e <- function(f)
   sequence(frequencies = f,
-           starts = c(1, 2, 3, 4),
+           starts = c(1, 2, 3, 4.5),
            durations = 0.5,
            instrument = drumlike,
            tempo = 205,
