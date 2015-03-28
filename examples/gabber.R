@@ -59,18 +59,19 @@ b <- sequence(durations = 0.5, instrument = snare,
 
 e <- function(f)
   sequence(frequencies = f,
-           starts = c(1, 2, 3, 4.5),
+           starts = c(1, 2, 3, 4.2),
            durations = 0.5,
            instrument = drumlike,
            tempo = 205,
-           beats = 8)
+           beats = 4)
 
 phrase <- function() {
   c(rep(e(P.n(30 + intervals$P1)), 2), rep(e(P.n(30 + intervals$P4)), 2)) +
   b
 }
 
-play(phrase())
+play(e(220))
+#play(phrase())
 # scales$major
 
 # play(c(a(20), a(24), a(22), a(20)))
