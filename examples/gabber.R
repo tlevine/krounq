@@ -62,7 +62,7 @@ e <- function(f)
            starts = c(1, 2, 3, 4.5),
            durations = 0.5,
            instrument = drumlike,
-           tempo = 190,
+           tempo = 205,
            beats = 8)
 
 phrase <- function() {
