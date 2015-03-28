@@ -13,7 +13,7 @@ source('generate-data.R')
 # * Y
 # * 
 
-TEMPO <- 8 * SECOND * 60 / 103259
+TEMPO <- 216 # multiple of 24, for easy division
 
 norm <- function(x) {
   x / max(abs(x))
@@ -25,8 +25,6 @@ drumlike <- function(freq, duration) {
   duration.left <- min(duration, round(SECOND/8))
   base.left <- base[1:duration.left]
   base.right <- silence(max(0, duration - duration.left))
-  print(length(base.left))
-  print(length(base.right))
   c(base.left, base.right)
 }
 
