@@ -22,7 +22,7 @@ drumlike <- function(freq, duration) {
   base <- 0.8 * sawtooth(freq, duration) ^ 3 + runif(duration, -.2, .2)
   duration.left <- round(SECOND/8)
   base.left <- base[1:duration.left]
-  base.right <- silence(duration - duration.left)
+  base.right <- silence(max(0, duration - duration.left))
   c(base.left, base.right)
 }
 
