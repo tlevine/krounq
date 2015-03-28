@@ -4,7 +4,6 @@ library(ddr)
 data(roland)
 unloadNamespace('ddr')
 devtools::load_all()
-data(kick)
 source('generate-data.R')
 
 # Aesthetics
@@ -40,15 +39,14 @@ sample.instrument <- function(the.sample) {
   }
 }
 
-kick.instrument <- sample.instrument(kick)
-
+kick <- sample.instrument(norm(roland$BD1@left[(1:length(roland$BD1@left)) %% 2 == 0]))
 snare <- sample.instrument(norm(roland$SD0@left))
 hihat <- sample.instrument(norm(roland$HHO@left))
 
 # quarter, quarter, triplets | quarter, two eighths, four eighths
 a <- sequence(0, c(1, 2, 3, 3 + 2/3, 4 + 1/3,
                    5, 6, 6.5, 7, 7.5, 8, 8.5),
-              durations = 1, instrument = kick.instrument,
+              durations = 1, instrument = kick,
               tempo = 205, beats = 8)
 b <- sequence(durations = .25, instrument = snare,
               tempo = 205, beats = 8)
