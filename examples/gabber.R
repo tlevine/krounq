@@ -13,6 +13,8 @@ source('generate-data.R')
 # * Y
 # * 
 
+TEMPO <- 8 * SECOND * 60 / 103259
+
 norm <- function(x) {
   x / max(abs(x))
 }
@@ -51,28 +53,28 @@ hihat <- sample.instrument(norm(roland$HHO@left))
 #          c(1, 2, 3, 3 + 2/3, 4 + 1/3,
 #            5, 6, 6.5, 7, 7.5, 8, 8.5),
 #          durations = 1, instrument = drumlike,
-#          tempo = 205, beats = 8)
-#b <- sequence(durations = 0.5, instrument = snare,
-#              tempo = 205, beats = 8)
+#          tempo = TEMPO, beats = 8)
+b <- sequence(durations = 0.5, instrument = snare,
+              tempo = TEMPO, beats = 8)
 #d <- sequence(frequencies = P.n(40 + scales$major[c(1,3,2,1)]),
 #              starts = c(1, 5, 9, 13), durations = 4,
-#              instrument = scratch, tempo = 205, beats = 16)
+#              instrument = scratch, tempo = TEMPO, beats = 16)
 
 e <- function(f)
   sequence(frequencies = f,
-           starts = c(1, 2, 3, 4.5),
+           starts = c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
            durations = 0.5,
            instrument = drumlike,
-           tempo = 205,
-           beats = 4)
+           tempo = TEMPO,
+           beats = 8)
 
-phrase <- function() {
-  c(rep(e(P.n(30 + intervals$P1)), 2), rep(e(P.n(30 + intervals$P4)), 2)) +
-  b
+phrase <- function(key = 30) {
+  c(e(P.n(key + intervals$P1)), e(P.n(key + intervals$P4))) +
+  b * 3
 }
 
-play(e(220))
-#play(phrase())
+#play(e(220))
+play(phrase())
 # scales$major
 
 # play(c(a(20), a(24), a(22), a(20)))

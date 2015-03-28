@@ -48,6 +48,10 @@ sequence <- function(frequencies = 440, starts = NULL, durations = 0.5,
   notes <- data.frame(frequency = frequencies, start = starts, duration = durations)
 
   n.samples <- beats * sampling.rate * 60 / tempo
+  if (!n.samples %% 1 == 0) {
+    proposal <- beats * sampling.rate * 60 / round(n.samples)
+    stop(paste('Choose the tempo such that the number of samples will be a natural number;', proposal, 'will work.'))
+  }
   beat <- seq(1, beats + 1, length.out = n.samples + 1)
   beat <- beat[-(n.samples + 1)]
   waveform <- rep(0, n.samples)
