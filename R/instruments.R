@@ -25,3 +25,9 @@ xylophone <- instrument(curry(overtones, c(1, 2, 4, 8), sine), fade.cubic)
 clave <- instrument(square, fade.elbow)
 saxaphone <- instrument(curry(overtones, seq(1, 2^4, 2), square), fade.sqrt)
 sinesynth <- instrument(sine, fade.linear)
+
+clip <- function(wave, at = 1) {
+  wave[wave > at] <- at
+  wave[wave < -at] <- -at
+  wave
+}

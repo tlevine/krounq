@@ -2,11 +2,17 @@ library(devtools)
 unloadNamespace('devtools')
 devtools::load_all()
 
-x <- sine(440, SECOND/2)
-x <- x + runif(SECOND/2, -0.25, 0.25)
-x[x > 1] <- 1
-x[x < 1] <- 1
-play(x)
+# x <- clip(square(220, SECOND/2) + 0.2 * white.noise(SECOND/2))
+bass.drum <- function(freq, duration) {
+  base <- 0.8 * sine(freq, duration) ^ 3 + runif(duration, -.2, .2)
+  duration.left <- round(SECOND/8)
+  base.left <- base[1:duration.left]
+  base.right <- silence(duration - duration.left)
+  c(base.left, base.right)
+}
+
+
+play(bass.drum(300, SECOND/2) * 2^10)
 
 #freq <- P.n(7, a = 0)
 #drums <- sequence(freq, c(1, 2 - 1/8, 3, 4, 4.5),
