@@ -44,17 +44,21 @@ snare <- sample.instrument(norm(roland$SD0@left))
 hihat <- sample.instrument(norm(roland$HHO@left))
 
 # quarter, quarter, triplets | quarter, two eighths, four eighths
-a <- sequence(frequencies = P.n(40 + scales$major[rep(c(1,3,2,1), each = 3)]),
-              c(1, 2, 3, 3 + 2/3, 4 + 1/3,
-                5, 6, 6.5, 7, 7.5, 8, 8.5),
-              durations = 1, instrument = drumlike,
-              tempo = 205, beats = 8)
-b <- sequence(durations = .25, instrument = snare,
-              tempo = 205, beats = 8)
-d <- sequence(frequencies = P.n(40 + scales$major[c(1,3,2,1)]),
-              starts = c(1, 5, 9, 13), durations = 4,
-              instrument = scratch, tempo = 205, beats = 16)
+a <- function(base.note)
+ sequence(frequencies = P.n(base.note),
+          c(1, 2, 3, 3 + 2/3, 4 + 1/3,
+            5, 6, 6.5, 7, 7.5, 8, 8.5),
+          durations = 1, instrument = drumlike,
+          tempo = 205, beats = 8)
+#b <- sequence(durations = .25, instrument = snare,
+#              tempo = 205, beats = 8)
+#d <- sequence(frequencies = P.n(40 + scales$major[c(1,3,2,1)]),
+#              starts = c(1, 5, 9, 13), durations = 4,
+#              instrument = scratch, tempo = 205, beats = 16)
 #play(d)
-play(a)
+
+# scales$major
+
+play(c(a(20), a(24), a(22), a(20)))
 
 # play(a + b + 3 * d)
