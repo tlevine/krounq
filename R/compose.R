@@ -68,7 +68,7 @@ sequence <- function(frequencies = 440, starts = NULL, durations = 0.5,
    #  print(sum(selector))
    #print(length(x))
    #stop('aoeu')
-      print(notes[i,])
+#     print(notes[i,])
       waveform[selector]
     }
   }

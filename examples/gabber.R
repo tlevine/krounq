@@ -25,6 +25,8 @@ drumlike <- function(freq, duration) {
   duration.left <- min(duration, round(SECOND/8))
   base.left <- base[1:duration.left]
   base.right <- silence(max(0, duration - duration.left))
+  print(length(base.left))
+  print(length(base.right))
   c(base.left, base.right)
 }
 
