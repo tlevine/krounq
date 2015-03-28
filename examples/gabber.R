@@ -2,6 +2,13 @@ library(devtools)
 unloadNamespace('devtools')
 devtools::load_all()
 
+# Aesthetics
+# * Tilt
+# * Color
+# * X
+# * Y
+# * 
+
 # x <- clip(square(220, SECOND/2) + 0.2 * white.noise(SECOND/2))
 scratch <- function(freq, duration) {
   base <- 0.8 * sine(freq, duration) ^ 3 + runif(duration, -.2, .2)
