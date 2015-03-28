@@ -11,8 +11,13 @@ bass.drum <- function(freq, duration) {
   c(base.left, base.right)
 }
 
+# quarter, quarter, triplets | quarter, two eighths, four eighths
+b <- sequence(300, c(1, 2, 3, 3 + 2/3, 4 + 1/3,
+                     1, 2, 2.5, 3, 3.5, 4, 4.5),
+              durations = 0.5, instrument = bass.drum,
+              tempo = 205)
 
-play(bass.drum(300, SECOND/2) * 2^10)
+play(b[-length(b)])
 
 #freq <- P.n(7, a = 0)
 #drums <- sequence(freq, c(1, 2 - 1/8, 3, 4, 4.5),
