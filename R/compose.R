@@ -36,9 +36,9 @@ invert.chord <- function(chord, full.inversion) {
 #' onbeat.offbeat.23 <- track(110,
 #'                            c(2, 3, 5, 6.5, 8),
 #'                            durations = c(1, 1, 1.5, 0.5, 1) / 4)
-sequence <- function(frequencies, starts, durations = 0.5,
-                     instrument = sinesynth,
-                     tempo = 240, beats = 8, sampling.rate = SECOND) {
+sequencer <- function(frequencies, starts, durations = 0.5,
+                      instrument = sinesynth,
+                      tempo = 240, beats = 8, sampling.rate = SECOND) {
   notes <- data.frame(frequency = frequencies, start = starts, duration = durations)
 
   n.samples <- beats * sampling.rate * 60 / tempo
