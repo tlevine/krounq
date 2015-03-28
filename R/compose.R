@@ -57,20 +57,7 @@ sequence <- function(frequencies = 440, starts = NULL, durations = 0.5,
   waveform <- rep(0, n.samples)
   for (i in 1:nrow(notes)) {
     selector <- beat >= notes[i,'start'] & beat < (notes[i,'start'] + notes[i,'duration'])
-    x <- instrument(notes[i,'frequency'], sum(selector))
-    if (sum(selector) == 0) {
-      stop(paste('Something went wrong; x =', x))
-    } else if (sum(selector) == x) {
-      waveform[selector] <- x
-    } else {
-   #str(selector)
-   #print(sum(selector))
-   #  print(sum(selector))
-   #print(length(x))
-   #stop('aoeu')
-#     print(notes[i,])
-      waveform[selector]
-    }
+    waveform[selector] <- instrument(notes[i,'frequency'], sum(selector))
   }
   waveform[1:n.samples]
 }
