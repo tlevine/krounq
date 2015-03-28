@@ -18,8 +18,8 @@ norm <- function(x) {
 }
 
 # x <- clip(square(220, SECOND/2) + 0.2 * white.noise(SECOND/2))
-bass.drum <- function(freq, duration) {
-  base <- 0.8 * sine(freq, duration) ^ 3 + runif(duration, -.2, .2)
+drumlike <- function(freq, duration) {
+  base <- 0.8 * sawtooth(freq, duration) ^ 3 + runif(duration, -.2, .2)
   duration.left <- round(SECOND/8)
   base.left <- base[1:duration.left]
   base.right <- silence(duration - duration.left)
