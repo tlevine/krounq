@@ -65,9 +65,9 @@ phrase <- function(key = 30, speed = 2, pickup = NULL, drums = TRUE,
 }
 
 
-RHYTHMS <- list(c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
-                c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5),
-                c(1, 3, 5, 7), 1:8)
+RHYTHMS <- list(c(1, 3, 5, 7), 1:8,
+                c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
+                c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5))
 
 plot.phrase <- function(df) {
   # Response time divided by speed of light through fiber
@@ -80,9 +80,11 @@ plot.phrase <- function(df) {
   }
 
   # Number of different cities
-  rhythm <- length(unique(df$dst_city)) + 1
+  rhythm <- round(sd(anycast[anycast$start == 1426896503,'rt']) / 40)
   if (rhythm > 4)
     rhythm <- 4
+  else if (rhythm < 1)
+    rhythm <- 1
 
   phrase(key = 30, speed = max(1, nrow(df)),
          pickup = pickup,
