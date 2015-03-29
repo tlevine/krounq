@@ -58,12 +58,15 @@ b <- function(duration)
   sequence(durations = duration, instrument = snare,
            tempo = TEMPO, beats = 8)
 
-e <- function(f, duration, speed) {
+d <- function(f)
+  sequence(frequencies = f, instrument = drumlike,
+           durations = 4, beats = 8, tempo = TEMPO)
+
+e <- function(f) {
   starts <- c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5)
-  start.priorities <- c(1, 5, 7, 3, 8, 9, 4, 7, 2)
   sequence(frequencies = f,
-           starts = starts[start.priorities[1:(2 + speed)]],
-           durations = duration,
+           starts = starts,
+           durations = 0.5,
            instrument = drumlike,
            tempo = TEMPO,
            beats = 8)
@@ -72,9 +75,19 @@ e <- function(f, duration, speed) {
 phrase <- function(key = 30, speed = 0) {
   base.duration <- 2 ^ (4 - floor(speed))
 
-  c(e(P.n(key + intervals$P1), base.duration, speed),
-    e(P.n(key + intervals$P4), base.duration, speed)) +
-  b(base.duration) * 3
+  pounding <- b(base.duration) * 3
+
+  if (speed > 3) {
+    melody <- c(e(P.n(key + intervals$P1)),
+                e(P.n(key + intervals$P4)))
+  } else {
+    melody <- c(d(P.n(key + intervals$P1)),
+                d(P.n(key + intervals$M3)),
+                d(P.n(key + intervals$M2)),
+                d(P.n(key + intervals$P1)))
+  }
+
+  pounding + melody
 }
 
 #play(e(220))
