@@ -112,7 +112,7 @@ plot.phrase <- function(df) {
 library(RColorBrewer)
 
 frame <- function(df.full, df) {
-  colors <- paste0(brewer.pal(12, 'Set3'), '99')
+  colors <- rep(paste0(brewer.pal(12, 'Set3'), '99'), 2)
   names(colors)[1:length(levels(df.full$dst_city))] <- levels(df.full$dst_city)
 
   fg <- 'grey60'
@@ -155,8 +155,8 @@ anycast.probe <- ddply(anycast, 'prb_id', function(df) {
   df[order(df$rt)[1],]
 })
 
-music.step <- 24 * 60 # * 60
-video.step <- music.step * 2
+music.step <- 2 * 24 * 60 # * 60
+video.step <- music.step / 16
 music.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + music.step, music.step)
 video.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + video.step, video.step)
 
@@ -177,6 +177,6 @@ music <- function(anycast) {
                    function(start) plot.phrase(anycast[anycast$start == start,])))
 }
 video(anycast)
-#music(anycast)
+music(anycast)
 
 # krounq::play(phrase(anycast.probe, subset(anycast.probe, dst_city == 'LHR')))
