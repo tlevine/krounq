@@ -59,19 +59,14 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
 
 
 RHYTHMS <- list(c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
-                c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5))
+                c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5),
+                c(1, 3, 5, 7), 1:8)
 
 p <- function(row)
   phrase(key = 30, speed = row$Sepal.Length,
          pickup = scales$major[round(row$Sepal.Width - 1)],
-         drums = row$Petal.Width > 1,
-         rhythm = RHYTHMS[[1 + (row$Petal.Length > 3)]])
+         drums = row$Petal.Length > 3,
+         rhythm = RHYTHMS[[row$rhythm]])
 
-
-play(do.call(c,lapply(rownames(iris[1:8,]), function(i) p(iris[i,]))))
-#play(p(iris[3,]))
-
-#play(phrase(key = 30, speed = 4, drums = TRUE,
-#            rhythm = c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5)))
-
-#play(do.call(c,lapply(rownames(iris[1:8,]), p)))
+iris$rhythm <- as.numeric(iris$Species)
+play(do.call(c,lapply(order(iris$Petal.Width), function(i) p(iris[i,]))))
