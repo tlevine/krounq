@@ -6,20 +6,12 @@ unloadNamespace('ddr')
 devtools::load_all()
 source('generate-data.R')
 
-# Aesthetics
-# * Tilt
-# * Color
-# * X
-# * Y
-# * 
-
 TEMPO <- 216 # multiple of 24, for easy division
 
 norm <- function(x) {
   x / max(abs(x))
 }
 
-# x <- clip(square(220, SECOND/2) + 0.2 * white.noise(SECOND/2))
 drumlike <- function(freq, duration) {
   base <- 0.8 * sawtooth(freq, duration) ^ 3 + runif(duration, -.2, .2)
   duration.left <- min(duration, round(SECOND/8))
@@ -27,9 +19,6 @@ drumlike <- function(freq, duration) {
   base.right <- silence(max(0, duration - duration.left))
   c(base.left, base.right)
 }
-
-scratch <- function(freq, duration)
-  (0.8 * sine(freq, duration) ^ 3 + runif(duration, -.2, .2)) * fade.linear(duration)
 
 sample.instrument <- function(the.sample) {
   function(., duration) {
@@ -45,57 +34,44 @@ sample.instrument <- function(the.sample) {
 kick <- sample.instrument(norm(roland$BD1@left[(1:length(roland$BD1@left)) %% 2 == 0]))
 snare <- sample.instrument(norm(roland$SD0@left))
 hihat <- sample.instrument(norm(roland$HHO@left))
+rim <- sample.instrument(norm(roland$RIM@left))
 
-# quarter, quarter, triplets | quarter, two eighths, four eighths
-#a <- function(base.note)
-# sequence(frequencies = P.n(base.note),
-#          c(1, 2, 3, 3 + 2/3, 4 + 1/3,
-#            5, 6, 6.5, 7, 7.5, 8, 8.5),
-#          durations = 1, instrument = drumlike,
-#          tempo = TEMPO, beats = 8)
-
-b <- function(duration)
-  sequence(durations = duration, instrument = snare,
-           tempo = TEMPO, beats = 8)
-
-d <- function(f)
-  sequence(frequencies = f, instrument = drumlike,
-           durations = 4, beats = 8, tempo = TEMPO)
-
-e <- function(f) {
-  starts <- c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5)
-  sequence(frequencies = f,
-           starts = starts,
-           durations = 0.5,
-           instrument = drumlike,
-           tempo = TEMPO,
-           beats = 8)
-}
-
-phrase <- function(key = 30, speed = 0) {
+phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
+                   rhythm = c(1, 4)) {
   base.duration <- 2 ^ (4 - floor(speed))
 
-  pounding <- b(base.duration) * 3
+  pounding <- sequence(durations = base.duration,
+                       instrument = if (drums) snare else rim,
+                       tempo = TEMPO, beats = 8)
 
-  if (speed > 3) {
-    melody <- c(e(P.n(key + intervals$P1)),
-                e(P.n(key + intervals$P4)))
-  } else {
-    melody <- c(d(P.n(key + intervals$P1)),
-                d(P.n(key + intervals$M3)),
-                d(P.n(key + intervals$M2)),
-                d(P.n(key + intervals$P1)))
-  }
+  f <- rep(key, length(rhythm))
+  if (!is.null(pickup))
+    f[floor(rhythm) %% 4 == 0] <- key + pickup
+  melody <- sequence(frequencies = P.n(f),
+                     starts = rhythm,
+                     durations = 0.5,
+                     instrument = drumlike,
+                     tempo = TEMPO,
+                     beats = 8)
 
-  pounding + melody
+  rep(2.5 * pounding + melody, 2)
 }
 
-#play(e(220))
-#play(phrase(speed = 1) + phrase(speed = 2))
-play(c(phrase(speed = 2), phrase(speed = 4),
-       phrase(speed = 1)))
-# scales$major
 
-# play(c(a(20), a(24), a(22), a(20)))
+RHYTHMS <- list(c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
+                c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5))
 
-# play(a + b + 3 * d)
+p <- function(row)
+  phrase(key = 30, speed = row$Sepal.Length,
+         pickup = scales$major[round(row$Sepal.Width - 1)],
+         drums = row$Petal.Width > 1,
+         rhythm = RHYTHMS[[1 + (row$Petal.Length > 3)]])
+
+
+play(do.call(c,lapply(rownames(iris[1:8,]), function(i) p(iris[i,]))))
+#play(p(iris[3,]))
+
+#play(phrase(key = 30, speed = 4, drums = TRUE,
+#            rhythm = c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5)))
+
+#play(do.call(c,lapply(rownames(iris[1:8,]), p)))
