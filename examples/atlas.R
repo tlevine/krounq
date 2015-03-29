@@ -75,7 +75,7 @@ plot.phrase <- function(df) {
      .selector <- order(df$rt)[round(nrow(df)/2)]
     .rt.normalized <- df[.selector,'rt'] / (LIGHT.THROUGH.FIBER * df[.selector,'dist'])
     pickup <- scales$major[round(.rt.normalized)]
-    if (is.na(pickup))
+    if (length(pickup) == 0 || is.na(pickup))
       pickup <- NULL
   } else {
     pickup <- NULL
@@ -99,7 +99,7 @@ plot.phrase <- function(df) {
             drums = length(unique(df$prb_id)) > 20,
             rhythm = RHYTHMS[[rhythm]])
  #str(df)
- #print(x)
+  print(x)
   ddd <<- df
  #print(summary(df))
  #print(x)
@@ -142,7 +142,8 @@ frame <- function(df.full, df) {
 
 
 
-anycast <- read.csv('../ripe-atlas-anycast/anycast.csv', stringsAsFactors = FALSE)
+# anycast <- read.csv('../ripe-atlas-anycast/anycast.csv', stringsAsFactors = FALSE)
+anycast <- read.csv('examples/anycast.csv', stringsAsFactors = FALSE)
 anycast$as <- anycast$asn_v4
 anycast[anycast$asf == 6,'as'] <- anycast[anycast$asf == 6,'asn_v6']
 anycast$asn_v4 <- anycast$asn_v6 <- NULL
@@ -154,8 +155,8 @@ anycast.probe <- ddply(anycast, 'prb_id', function(df) {
   df[order(df$rt)[1],]
 })
 
-music.step <- 24 * 60 * 60
-video.step <- music.step * 4
+music.step <- 24 * 60 # * 60
+video.step <- music.step * 2
 music.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + music.step, music.step)
 video.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + video.step, video.step)
 
@@ -175,6 +176,7 @@ music <- function(anycast) {
   do.call(c,lapply(unique(anycast$start),
                    function(start) plot.phrase(anycast[anycast$start == start,])))
 }
-# video(anycast)
-# music(anycast)
+video(anycast)
+#music(anycast)
+
 # krounq::play(phrase(anycast.probe, subset(anycast.probe, dst_city == 'LHR')))
