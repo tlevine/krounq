@@ -111,7 +111,7 @@ plot.phrase <- function(df) {
 
 library(RColorBrewer)
 
-frame <- function(df.full, df) {
+frame <- function(df.full, df, pretty.date) {
   colors <- rep(paste0(brewer.pal(12, 'Set3'), '99'), 2)
   names(colors)[1:length(levels(df.full$dst_city))] <- levels(df.full$dst_city)
 
@@ -124,7 +124,7 @@ frame <- function(df.full, df) {
       las = 1, bg = bg)
 
   plot(dist ~ dist_theoretical_improvement, data = df.full, type = 'n',
-       main = 'Targetting 173.245.58.117 (anycast)',
+       main = paste('Targetting 173.245.58.117 (anycast)\nat', pretty.date),
        axes = F,
        xlab = 'Distance farther than the closest instance (km)',
        ylab = 'Distance to chosen instance (km)',
@@ -156,7 +156,7 @@ anycast.probe <- ddply(anycast, 'prb_id', function(df) {
 })
 
 music.step <- 2 * 24 * 60 # * 60
-video.step <- music.step / 16
+video.step <- music.step / 8
 music.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + music.step, music.step)
 video.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + video.step, video.step)
 
@@ -164,7 +164,8 @@ video <- function(anycast) {
   for (start in video.starts) {
     png(sprintf('frames/%s.png', start), width = 1600, height = 900)
     df <- subset(anycast, timestamp >= start & timestamp < start + video.step)
-    frame(anycast, df)
+    pretty.date <- strftime(as.POSIXct(start, origin = '1970-01-01'), '%H:%M')
+    frame(anycast, df, pretty.date)
     dev.off()
   }
 }
@@ -177,6 +178,6 @@ music <- function(anycast) {
                    function(start) plot.phrase(anycast[anycast$start == start,])))
 }
 video(anycast)
-music(anycast)
+#music(anycast)
 
 # krounq::play(phrase(anycast.probe, subset(anycast.probe, dst_city == 'LHR')))
