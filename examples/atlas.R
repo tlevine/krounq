@@ -75,21 +75,35 @@ plot.phrase <- function(df) {
      .selector <- order(df$rt)[round(nrow(df)/2)]
     .rt.normalized <- df[.selector,'rt'] / (LIGHT.THROUGH.FIBER * df[.selector,'dist'])
     pickup <- scales$major[round(.rt.normalized)]
+    if (is.na(pickup))
+      pickup <- NULL
   } else {
     pickup <- NULL
   }
 
   # Number of different cities
-  rhythm <- round(sd(anycast[anycast$start == 1426896503,'rt']) / 40)
-  if (rhythm > 4)
-    rhythm <- 4
-  else if (rhythm < 1)
-    rhythm <- 1
+  rhythm <- round(sd(df$rt) / 40)
 
-  phrase(key = 30, speed = max(1, nrow(df)),
-         pickup = pickup,
-         drums = nrow(df) > 0,
-         rhythm = RHYTHMS[[rhythm]])
+  if (is.na(rhythm)) {
+    rhythm <- 1
+  } else if (rhythm > 4) {
+    rhythm <- 4
+  } else if (rhythm < 1) {
+    rhythm <- 1
+  }
+  speed <- min(5, round(median(df$dist) / 400))
+  if (is.na(speed))
+    speed <- 5
+  x <- list(key = 30, speed = speed,
+            pickup = pickup,
+            drums = length(unique(df$prb_id)) > 20,
+            rhythm = RHYTHMS[[rhythm]])
+ #str(df)
+ #print(x)
+  ddd <<- df
+ #print(summary(df))
+ #print(x)
+  do.call(phrase, x)
 }
 
 
@@ -140,8 +154,8 @@ anycast.probe <- ddply(anycast, 'prb_id', function(df) {
   df[order(df$rt)[1],]
 })
 
-music.step <- 3600 * 3
-video.step <- 3600
+music.step <- 24 * 60 * 60
+video.step <- music.step * 4
 music.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + music.step, music.step)
 video.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + video.step, video.step)
 
@@ -158,9 +172,8 @@ music <- function(anycast) {
   for (start in music.starts) {
     anycast[anycast$timestamp >= start,'start'] <- start
   }
-  df <- anycast[anycast$start == start,]
   do.call(c,lapply(unique(anycast$start),
-                   function(start) plot.phrase(df)))
+                   function(start) plot.phrase(anycast[anycast$start == start,])))
 }
 # video(anycast)
 # music(anycast)
