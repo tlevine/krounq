@@ -47,36 +47,40 @@ snare <- sample.instrument(norm(roland$SD0@left))
 hihat <- sample.instrument(norm(roland$HHO@left))
 
 # quarter, quarter, triplets | quarter, two eighths, four eighths
-
 #a <- function(base.note)
 # sequence(frequencies = P.n(base.note),
 #          c(1, 2, 3, 3 + 2/3, 4 + 1/3,
 #            5, 6, 6.5, 7, 7.5, 8, 8.5),
 #          durations = 1, instrument = drumlike,
 #          tempo = TEMPO, beats = 8)
-b <- sequence(durations = 0.5, instrument = snare,
-              tempo = TEMPO, beats = 8)
-#d <- sequence(frequencies = P.n(40 + scales$major[c(1,3,2,1)]),
-#              starts = c(1, 5, 9, 13), durations = 4,
-#              instrument = scratch, tempo = TEMPO, beats = 16)
 
-e <- function(f)
+b <- function(duration)
+  sequence(durations = duration, instrument = snare,
+           tempo = TEMPO, beats = 8)
+
+e <- function(f, duration, speed) {
+  starts <- c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5)
+  start.priorities <- c(1, 5, 7, 3, 8, 9, 4, 7, 2)
   sequence(frequencies = f,
-           starts = c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
-           durations = 0.5,
+           starts = starts[start.priorities[1:(2 + speed)]],
+           durations = duration,
            instrument = drumlike,
            tempo = TEMPO,
            beats = 8)
+}
 
-phrase <- function(key = 30, speed = ) {
-  (round(speed) - 1)
+phrase <- function(key = 30, speed = 0) {
+  base.duration <- 2 ^ (4 - floor(speed))
 
-  c(e(P.n(key + intervals$P1)), e(P.n(key + intervals$P4))) +
-  b * 3
+  c(e(P.n(key + intervals$P1), base.duration, speed),
+    e(P.n(key + intervals$P4), base.duration, speed)) +
+  b(base.duration) * 3
 }
 
 #play(e(220))
-play(phrase())
+#play(phrase(speed = 1) + phrase(speed = 2))
+play(c(phrase(speed = 2), phrase(speed = 4),
+       phrase(speed = 1)))
 # scales$major
 
 # play(c(a(20), a(24), a(22), a(20)))
