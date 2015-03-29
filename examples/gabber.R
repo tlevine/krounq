@@ -63,10 +63,11 @@ RHYTHMS <- list(c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
                 c(1, 3, 5, 7), 1:8)
 
 p <- function(row)
-  phrase(key = 30, speed = row$Sepal.Length,
+  phrase(key = 30, speed = row$Sepal.Length - 1,
          pickup = scales$major[round(row$Sepal.Width - 1)],
          drums = row$Petal.Length > 3,
          rhythm = RHYTHMS[[row$rhythm]])
 
 iris$rhythm <- as.numeric(iris$Species)
-play(do.call(c,lapply(order(iris$Petal.Width), function(i) p(iris[i,]))))
+is <- order(iris$Petal.Width)[seq(1, 150, length.out = 12)]
+play(do.call(c,lapply(is, function(i) p(iris[i,]))))
