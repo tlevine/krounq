@@ -13,6 +13,7 @@ unloadNamespace('ddr')
 source('generate-data.R')
 
 TEMPO <- 216 # multiple of 24, for easy division
+#TEMPO <- 180
 LIGHT.THROUGH.FIBER <- 1.444 * 2 * (1000/299792)
 
 norm <- function(x) {
@@ -160,9 +161,13 @@ video.step <- music.step / 8
 music.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + music.step, music.step)
 video.starts <- seq(min(anycast$timestamp), max(anycast$timestamp) + video.step, video.step)
 
+#video.step <- 60 * 60
+#music.step <- video.step / 2
+#music.stats <- video.starts <- seq(1427414400, 1427414400 + 24 * 60 * 60, 3600)
+
 video <- function(anycast) {
   for (start in video.starts) {
-    png(sprintf('frames/%s.png', start), width = 1600, height = 900)
+    png(sprintf('frames/%s.png', start), width = 800, height = 450)
     df <- subset(anycast, timestamp >= start & timestamp < start + video.step)
     pretty.date <- strftime(as.POSIXct(start, origin = '1970-01-01'), '%H:%M')
     frame(anycast, df, pretty.date)
@@ -177,7 +182,9 @@ music <- function(anycast) {
   do.call(c,lapply(unique(anycast$start),
                    function(start) plot.phrase(anycast[anycast$start == start,])))
 }
-video(anycast)
-#music(anycast)
+#video(anycast)
+x <- music(anycast)
+library(tuneR)
+writeWave(normalize(wave(left = x, bit = 16), unit = '16'), 'anycastxcore.wav')
 
 # krounq::play(phrase(anycast.probe, subset(anycast.probe, dst_city == 'LHR')))
