@@ -10,6 +10,13 @@ wave <- function(left = numeric(0), right = numeric(0),
   tuneR::Wave(left, right,
               samp.rate = sampling.rate, bit = bit)
 
+#' Write a wave as a wav file.
+write.wave <- function(w, filename, do.normalize = TRUE) {
+  if (do.normalize)
+    w <- tuneR::normalize(w, unit = '16')
+  tuneR::writeWave(w, filename)
+}
+
 #' Play a one-second clip of the function, if no player is specified, or
 #' pass the arguments to tuneR::play if a player is specified.
 #' @examples
