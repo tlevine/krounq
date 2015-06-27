@@ -54,7 +54,7 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
   2.5 * pounding + melody
 }
 
-frame <- function(df) {
+frame <- function(df, j) {
   PETAL <- c(-3, 12)
   SEPAL <- c(-1, 5)
 
@@ -100,7 +100,7 @@ p <- function(row)
          rhythm = RHYTHMS[[as.numeric(row$Species)]])
 
 # Subset
-iris <- iris[floor(seq(1, nrow(iris), length.out = 24))]
+iris <- iris[floor(seq(1, nrow(iris), length.out = 24)),]
 
 is <- order(iris$Petal.Width)
 
@@ -112,15 +112,17 @@ write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
 for (i in 1:nrow(iris)) {
   fn <- sprintf('/tmp/krounq-%03d.png', i)
   png(fn, width = 800, height = 450)
-  frame(iris[1:i,])
+  for (j in 1:2)
+    frame(iris[1:i,], j)
   dev.off()
 }
 
-system('avconv \
-        -r 0.5 -i /tmp/krounq-%03d.png -i /tmp/krounq.wav \
-        -y -pix_fmt yuv420p -r 0.5 \
-        -strict -2 \
-        /tmp/krounq.webm')
+system(paste(
+  'avconv',
+  '-r 1 -i /tmp/krounq-%03d.png -i /tmp/krounq.wav',
+  '-y -pix_fmt yuv420p -r 1',
+  '-strict -2',
+  '/tmp/krounq.webm'))
 
 
 
