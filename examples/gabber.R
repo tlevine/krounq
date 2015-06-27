@@ -100,7 +100,8 @@ p <- function(row)
          rhythm = RHYTHMS[[as.numeric(row$Species)]])
 
 # Subset
-iris <- iris[floor(seq(1, nrow(iris), length.out = 24)),]
+data(iris)
+# iris <- iris[floor(seq(1, nrow(iris), length.out = 24)),]
 
 is <- order(iris$Petal.Width)
 
