@@ -69,4 +69,6 @@ p <- function(row)
          rhythm = RHYTHMS[[as.numeric(row$Species)]])
 
 is <- order(iris$Petal.Width)
-play(do.call(c,lapply(is, function(i) p(iris[i,]))))
+song <- do.call(c,lapply(is, function(i) p(iris[i,])))
+write.wave(wave(song), 'examples/iriscore.wav', do.normalize = TRUE) {
+# play(song)
