@@ -85,7 +85,7 @@ Rhythm ~ Species'
        density = df$density,
        angle = as.numeric(df$Species) * 15 + jitter - 45 * j)
   last.row <- df[nrow(df),]
-  text(x = mean(PETAL), y = max(SEPAL), pos = 1,
+  text(x = min(PETAL), y = max(SEPAL), pos = 1,
        label = MAPPINGS, col = COLORS[last.row$Species])
   text(x = last.row$Petal.Length, y = last.row$Petal.Width,
        label = last.row$Species)
