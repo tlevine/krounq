@@ -81,7 +81,7 @@ Rhythm ~ Species'
        angle = as.numeric(df$Species) * 15 + 15 + rnorm(nrow(df), 5, 2),
        density = df$density) 
   last.row <- df[nrow(df),]
-  text(x = mean(PETAL), y = max(SEPAL) + 1,
+  text(x = mean(PETAL), y = max(SEPAL) + 1, pos = 1,
        label = MAPPINGS, col = COLORS[last.row$Species])
   text(x = last.row$Petal.Length, y = last.row$Petal.Width,
        label = last.row$Species)
