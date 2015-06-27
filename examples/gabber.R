@@ -69,7 +69,7 @@ Rhythm ~ Species'
       font = 2, family = 'sans')
   df$density <- 5
   if (j == 0)
-    df[nrow(df),'density'] <- NA
+    df[nrow(df),'density'] <- 50
   plot(0, 0, xlim = PETAL, ylim = SEPAL,
        type = 'n', bty = 'l', asp = 1,
        main = '', sub = 'Rectangles are sepal sizes.',
