@@ -99,7 +99,9 @@ p <- function(row)
          drums = row$Petal.Length > 3,
          rhythm = RHYTHMS[[as.numeric(row$Species)]])
 
-# floor(seq(1, nrow(iris), length.out = 96))
+# Subset
+iris <- iris[floor(seq(1, nrow(iris), length.out = 24))]
+
 is <- order(iris$Petal.Width)
 
 # Music
