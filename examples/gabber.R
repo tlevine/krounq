@@ -1,8 +1,6 @@
 library(devtools)
 unloadNamespace('devtools')
-library(ddr)
-data(roland)
-unloadNamespace('ddr')
+load('examples/roland.rda')
 devtools::load_all()
 source('generate-data.R')
 
