@@ -73,14 +73,16 @@ Rhythm ~ Species'
        type = 'n', bty = 'l', asp = 1,
        main = '', sub = 'Rectangles are sepal sizes.',
        xlab = 'Petal Length', ylab = 'Petal Width')
+
+  jitter <- round(30 * (1:nrow(df) / nrow(df)))
   rect(xleft   = df$Petal.Length - 0.5 * df$Sepal.Length,
        xright  = df$Petal.Length + 0.5 * df$Sepal.Length,
        ytop    = df$Petal.Width - 0.5 * df$Sepal.Width,
        ybottom = df$Petal.Width + 0.5 * df$Sepal.Width,
-       col = if (j == 0) COLORS[df$Species] else NA,
-       border = COLORS[df$Species],
+       col = COLORS[df$Species],
+       border = TRUE,
        density = df$density,
-       angle = as.numeric(df$Species) * 15 + 15)
+       angle = as.numeric(df$Species) * 15 + jitter - 45 * j)
   last.row <- df[nrow(df),]
   text(x = mean(PETAL), y = max(SEPAL), pos = 1,
        label = MAPPINGS, col = COLORS[last.row$Species])
