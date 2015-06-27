@@ -21,8 +21,7 @@ drumlike <- function(freq, duration) {
 sample.instrument <- function(the.sample) {
   function(., duration) {
     if (duration < length(the.sample)) {
-      stop(paste('Duration must be at least', length(the.sample)))
-      the.sample[1:duration]
+      stop(paste('Duration is', duration, 'but must be at least', length(the.sample)))
     } else {
       c(the.sample, silence(duration - length(kick)))
     }
