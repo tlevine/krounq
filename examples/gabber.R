@@ -59,6 +59,8 @@ frame <- function(df) {
   SEPAL <- c(-1, 5)
   par(bg = 'black', fg = 'white', col = 'white', col.axis = 'white',
       col.main = 'white', col.sub = 'white', col.lab = 'white')
+  df$density <- 5
+  df[nrow(df),'density'] <- NA
   plot(0, 0, xlim = PETAL, ylim = SEPAL,
        type = 'n', bty = 'l', asp = 1,
        main = '', sub = 'Rectangles are sepal sizes.',
@@ -68,8 +70,10 @@ frame <- function(df) {
        ytop    = df$Petal.Width - 0.5 * df$Sepal.Width,
        ybottom = df$Petal.Width + 0.5 * df$Sepal.Width,
        col = COLORS[df$Species],
-       lty = 0)
+       angle = as.numeric(df$Species) * 15 + 15 + rnorm(nrow(df), 5, 2),
+       density = df$density) 
 }
+frame(iris)
 
 COLORS <- c(setosa = 'violet', virginica = 'pink', versicolor = 'blue')
 
