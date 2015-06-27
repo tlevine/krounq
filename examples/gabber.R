@@ -107,7 +107,7 @@ p <- function(row)
 
 # Subset
 data(iris)
-iris <- iris[floor(seq(1, nrow(iris), length.out = 24)),]
+# iris <- iris[floor(seq(1, nrow(iris), length.out = 24)),]
 
 is <- order(iris$Petal.Width)
 
