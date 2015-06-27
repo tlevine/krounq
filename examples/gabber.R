@@ -78,8 +78,8 @@ Rhythm ~ Species'
        ytop    = df$Petal.Width - 0.5 * df$Sepal.Width,
        ybottom = df$Petal.Width + 0.5 * df$Sepal.Width,
        col = COLORS[df$Species],
-       angle = as.numeric(df$Species) * 15 + 15 + rnorm(nrow(df), 5, 2),
-       density = df$density, border = j == 1) 
+       angle = as.numeric(df$Species) * 15 + 15 + 45 * j,
+       density = df$density, border = if (j == 0) NA else TRUE) 
   last.row <- df[nrow(df),]
   text(x = mean(PETAL), y = max(SEPAL), pos = 1,
        label = MAPPINGS, col = COLORS[last.row$Species])
@@ -101,7 +101,7 @@ p <- function(row)
 
 # Subset
 data(iris)
-# iris <- iris[floor(seq(1, nrow(iris), length.out = 24)),]
+iris <- iris[floor(seq(1, nrow(iris), length.out = 24)),]
 
 is <- order(iris$Petal.Width)
 
@@ -113,7 +113,7 @@ write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
 for (i in 1:nrow(iris)) {
   fn <- sprintf('/tmp/krounq-%03d.png', i)
   png(fn, width = 800, height = 450)
-  for (j in 1:2)
+  for (j in 0:1)
     frame(iris[1:i,], j)
   dev.off()
 }
