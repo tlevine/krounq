@@ -108,13 +108,13 @@ write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
 
 # Video
 for (i in 1:nrow(iris)) {
-  fn <- sprintf('/tmp/krounq-%3d.png', i)
+  fn <- sprintf('/tmp/krounq-%03d.png', i)
   png(fn, width = 800, height = 450)
   frame(iris[1:i,])
   dev.off()
 }
 
-system('avconv
+system('avconv \
         -r 0.5 -i /tmp/krounq-%03d.png -i /tmp/krounq.wav \
         -y -pix_fmt yuv420p -r 0.5 \
         -strict -2 \
