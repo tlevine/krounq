@@ -104,17 +104,21 @@ is <- order(iris$Petal.Width)
 
 # Music
 song <- do.call(c,lapply(is, function(i) p(iris[i,])))
-write.wave(wave(song), 'examples/iriscore.wav', do.normalize = TRUE)
-system('ffmpeg -y -i examples/iriscore.wav examples/iriscore.ogg')
+write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
 
 # Video
 for (i in 1:nrow(iris)) {
-  fn <- paste0('examples/iriscore-', i, '.png')
+  fn <- sprintf('/tmp/krounq-%3d.png', i)
   png(fn, width = 800, height = 450)
   frame(iris[1:i,])
   dev.off()
 }
 
+system('avconv
+        -r 2 -i /tmp/krounq-%03d.png -i /tmp/krounq.wav \
+        -y -pix_fmt yuv420p -r 2 \
+        -strict -2 \
+        /tmp/krounq.webm')
 
 
 
