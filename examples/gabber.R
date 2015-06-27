@@ -105,7 +105,7 @@ is <- order(iris$Petal.Width)
 # Music
 song <- do.call(c,lapply(is, function(i) p(iris[i,])))
 write.wave(wave(song), 'examples/iriscore.wav', do.normalize = TRUE)
-system('ffmpeg -i examples/iriscore.wav examples/iriscore.ogg')
+system('ffmpeg -y -i examples/iriscore.wav examples/iriscore.ogg')
 
 # Video
 for (i in 1:nrow(iris)) {
