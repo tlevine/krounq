@@ -78,7 +78,7 @@ Rhythm ~ Species'
        ytop    = df$Petal.Width - 0.5 * df$Sepal.Width,
        ybottom = df$Petal.Width + 0.5 * df$Sepal.Width,
        col = COLORS[df$Species],
-       angle = as.numeric(df$Species) * 15 + 15 + 45 * j,
+       angle = as.numeric(df$Species) * 15 + 15,
        density = df$density, border = if (j == 0) NA else TRUE) 
   last.row <- df[nrow(df),]
   text(x = mean(PETAL), y = max(SEPAL), pos = 1,
