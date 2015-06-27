@@ -117,7 +117,7 @@ write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
 # Video
 for (i in 1:nrow(iris)) {
   for (j in 0:1) {
-    fn <- sprintf('/tmp/krounq-%03d.png', i * 2 + j)
+    fn <- sprintf('/tmp/krounq-%03d.png', (i-1)*2 + j)
     png(fn, width = 800, height = 450)
     frame(iris[1:i,], j)
     dev.off()
