@@ -57,8 +57,16 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
 frame <- function(df) {
   PETAL <- c(-3, 12)
   SEPAL <- c(-1, 5)
+
+  MAPPINGS <- 'Speed ~ Sepal Length
+Pickup note ~ Sepal Width
+Time ~ Petal Width
+Drums ~ Petal Length > 3
+Rhythm ~ Species'
+
   par(bg = 'black', fg = 'white', col = 'white', col.axis = 'white',
-      col.main = 'white', col.sub = 'white', col.lab = 'white')
+      col.main = 'white', col.sub = 'white', col.lab = 'white',
+      font = 2, family = 'sans')
   df$density <- 5
   df[nrow(df),'density'] <- NA
   plot(0, 0, xlim = PETAL, ylim = SEPAL,
@@ -72,8 +80,12 @@ frame <- function(df) {
        col = COLORS[df$Species],
        angle = as.numeric(df$Species) * 15 + 15 + rnorm(nrow(df), 5, 2),
        density = df$density) 
+  last.row <- df[nrow(df),]
+  text(x = mean(PETAL), y = max(SEPAL) + 1,
+       label = MAPPINGS, col = COLORS[last.row$Species])
+  text(x = last.row$Petal.Length, y = last.row$Petal.Width,
+       label = last.row$Species)
 }
-frame(iris)
 
 COLORS <- c(setosa = 'violet', virginica = 'pink', versicolor = 'blue')
 
@@ -88,6 +100,20 @@ p <- function(row)
          rhythm = RHYTHMS[[as.numeric(row$Species)]])
 
 is <- order(iris$Petal.Width)
+
+# Music
 song <- do.call(c,lapply(is, function(i) p(iris[i,])))
 write.wave(wave(song), 'examples/iriscore.wav', do.normalize = TRUE)
+
+# Video
+for (i in 1:nrow(iris)) {
+  fn <- paste0('examples/iriscore-', i, '.png')
+  png(fn, width = 800, height = 450)
+  frame(iris[1:i,])
+  dev.off()
+}
+
+
+
+
 # play(song)
