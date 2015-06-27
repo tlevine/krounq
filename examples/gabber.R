@@ -54,6 +54,24 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
   rep(2.5 * pounding + melody, 2)
 }
 
+frame <- function(df) {
+  PETAL <- c(-3, 12)
+  SEPAL <- c(-1, 5)
+  par(bg = 'black', fg = 'white', col = 'white', col.axis = 'white',
+      col.main = 'white', col.sub = 'white', col.lab = 'white')
+  plot(0, 0, xlim = PETAL, ylim = SEPAL,
+       type = 'n', bty = 'l', asp = 1,
+       main = '', sub = 'Rectangles are sepal sizes.',
+       xlab = 'Petal Length', ylab = 'Petal Width')
+  rect(xleft   = df$Petal.Length - 0.5 * df$Sepal.Length,
+       xright  = df$Petal.Length + 0.5 * df$Sepal.Length,
+       ytop    = df$Petal.Width - 0.5 * df$Sepal.Width,
+       ybottom = df$Petal.Width + 0.5 * df$Sepal.Width,
+       col = COLORS[df$Species],
+       lty = 0)
+}
+
+COLORS <- c(setosa = 'violet', virginica = 'pink', versicolor = 'blue')
 
 RHYTHMS <- list(c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
                 c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5),
