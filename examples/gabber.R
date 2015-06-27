@@ -85,9 +85,11 @@ Rhythm ~ Species'
        label = MAPPINGS, col = COLORS[last.row$Species])
   text(x = last.row$Petal.Length, y = last.row$Petal.Width,
        label = last.row$Species)
+  text(x = 0, y = 5,
+       label = paste0('Frame ', nrow(df), '-', j, '\n'))
 }
 
-COLORS <- c(setosa = 'violet', virginica = 'pink', versicolor = 'blue')
+COLORS <- c(setosa = 'violet', virginica = 'pink', versicolor = 'cyan')
 
 RHYTHMS <- list(c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
                 c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5),
