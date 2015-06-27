@@ -21,9 +21,9 @@ drumlike <- function(freq, duration) {
 sample.instrument <- function(the.sample) {
   function(., duration) {
     if (duration < length(the.sample)) {
-      c(the.sample, silence(duration - length(the.sample)))
-    } else {
       the.sample[1:duration]
+    } else {
+      c(the.sample, silence(duration - length(the.sample)))
     }
   }
 }
