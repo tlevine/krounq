@@ -4,7 +4,7 @@ load('examples/roland.rda')
 devtools::load_all()
 source('generate-data.R')
 
-TEMPO <- 216 # multiple of 24, for easy division
+TEMPO <- 240 # multiple of 24, for easy division
 
 norm <- function(x) {
   x / max(abs(x))
@@ -115,8 +115,8 @@ for (i in 1:nrow(iris)) {
 }
 
 system('avconv
-        -r 2 -i /tmp/krounq-%03d.png -i /tmp/krounq.wav \
-        -y -pix_fmt yuv420p -r 2 \
+        -r 0.5 -i /tmp/krounq-%03d.png -i /tmp/krounq.wav \
+        -y -pix_fmt yuv420p -r 0.5 \
         -strict -2 \
         /tmp/krounq.webm')
 
