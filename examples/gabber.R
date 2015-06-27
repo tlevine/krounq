@@ -81,16 +81,16 @@ Rhythm ~ Species'
        ytop    = df$Petal.Width - 0.5 * df$Sepal.Width,
        ybottom = df$Petal.Width + 0.5 * df$Sepal.Width,
        col = COLORS[df$Species],
-       border = TRUE,
+       border = NA,
        density = df$density,
        angle = as.numeric(df$Species) * 15 + jitter - 45 * j)
   last.row <- df[nrow(df),]
-  text(x = min(PETAL), y = max(SEPAL), pos = 1,
+  text(x = 0, y = max(SEPAL), pos = 1,
        label = MAPPINGS, col = COLORS[last.row$Species])
   text(x = last.row$Petal.Length, y = last.row$Petal.Width,
        label = last.row$Species)
-  text(x = 0, y = 5,
-       label = paste0('Frame ', nrow(df), '-', j, '\n'))
+# text(x = 0, y = 5,
+#      label = paste0('Frame ', nrow(df), '-', j, '\n'))
 }
 
 COLORS <- c(setosa = 'violet', virginica = 'pink', versicolor = 'cyan')
