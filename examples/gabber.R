@@ -51,7 +51,7 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
                      tempo = TEMPO,
                      beats = 8)
 
-  rep(2.5 * pounding + melody, 2)
+  2.5 * pounding + melody
 }
 
 frame <- function(df) {
@@ -99,11 +99,13 @@ p <- function(row)
          drums = row$Petal.Length > 3,
          rhythm = RHYTHMS[[as.numeric(row$Species)]])
 
+# floor(seq(1, nrow(iris), length.out = 96))
 is <- order(iris$Petal.Width)
 
 # Music
 song <- do.call(c,lapply(is, function(i) p(iris[i,])))
 write.wave(wave(song), 'examples/iriscore.wav', do.normalize = TRUE)
+system('ffmpeg -i examples/iriscore.wav examples/iriscore.ogg')
 
 # Video
 for (i in 1:nrow(iris)) {
