@@ -7,8 +7,7 @@ H <- 1
 
 BPS <- 240 / 60
 
-MELODY <- 49 + c(W, W, H, W, W, W, H)
-CHORD <- MELODY[c(1, 3, 5, 7)]
+scale <- 49 + c(0 W, W, H, W, W, W, H)
 
 song <- function(seconds) {
   absolute.beat <- floor(seconds * BPS)
@@ -16,10 +15,13 @@ song <- function(seconds) {
   measure <- (absolute.beat %% 4) + 1
   beat <- floor(absolute.beat / 4) + 1
 
+  note <- ceiling(ChickWeight[measure,'weight'] %% 8)
+  octave <- floor(ChickWeight[measure,'weight'] / 8)
+  scale[n %% 8] + 12 * octave
+
 # sin(sin(seconds))
-  sin(P.n(CHORD[measure])) * (absolute.beat %% 4) / 4
+  sin(P.n(pitch)) * (absolute.beat %% 4) / 4
 }
 
-SECONDS <- 10
 FRAME.RATE <- 44100
-play(wave(song((1:(SECONDS*FRAME.RATE))/:FRAME.RATE)))
+w <- wave(song((1:(nrow(ChickWeight)*FRAME.RATE))/FRAME.RATE))
