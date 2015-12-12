@@ -83,7 +83,7 @@ Incidents are played in the order they occurred.'
          bg = COLORS[df$weekday],
 	 pch = 21
   )
-  if (j == 2) {
+  if (j == 1) {
     points(x = last.row$Longitude, y = last.row$Latitude,
   	 cex = max(1, 4 * sqrt(last.row$kia + last.row$wia)),
            bg = 'white',
