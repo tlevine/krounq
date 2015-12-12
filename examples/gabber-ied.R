@@ -28,7 +28,6 @@ sample.instrument <- function(the.sample) {
   }
 }
 
-roland <- lapply(roland, updateWave)
 kick <- sample.instrument(norm(roland$BD1@left[(1:length(roland$BD1@left)) %% 2 == 0]))
 snare <- sample.instrument(norm(roland$SD0@left))
 hihat <- sample.instrument(norm(roland$HHO@left))
