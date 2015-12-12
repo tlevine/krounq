@@ -44,6 +44,8 @@ sequence <- function(frequencies = 440, starts = NULL, durations = 0.5,
       stop('If starts is NULL, durations must have length 1.')
     starts <- seq(1, beats + 1, durations)
     starts <- starts[-length(starts)]
+    if (length(starts) == 0)
+      starts <- 1
   }
   notes <- data.frame(frequency = frequencies, start = starts, duration = durations)
 

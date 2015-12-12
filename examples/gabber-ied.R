@@ -42,7 +42,7 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
                        tempo = TEMPO, beats = 8)
 
   f <- rep(key, length(rhythm))
-  if (!is.null(pickup))
+  if (!is.null(pickup) && length(pickup) > 0)
     f[floor(rhythm) %% 4 == 0] <- key + pickup
   melody <- sequence(frequencies = P.n(f),
                      starts = rhythm,
@@ -102,8 +102,8 @@ RHYTHMS <- list(
 
 p <- function(row)
   phrase(key = 30, speed = (row$kia + row$wia) / 20,
-         pickup = scales$major[round(row$Sepal.Width / 10 - 1)],
-         drums = row$kia / (row$kia + row$wia) > 1/3,
+         pickup = scales$major[as.numeric(row$Region)],
+         drums = row$kia + row$wia > 1 && (row$kia / (row$kia + row$wia)) > 1/3,
          rhythm = RHYTHMS[[row$weekday]])
 
 # Subset
@@ -113,10 +113,14 @@ ied$kia <- rowSums(ied[c("FriendlyKIA", "HostNationKIA", "EnemyKIA", "CivilianKI
 ied$date <- strptime(ied$DateOccurred, '%m/%d/%y 0:00')
 ied$weekday <- factor(weekdays(ied$date), levels = c('Weekday', 'Friday', 'Saturday'))
 ied$weekday[is.na(ied$weekday)] <- 'Weekday'
+ied$kia[is.na(ied$kia)] <- 0
+ied$wia[is.na(ied$wia)] <- 0
+ied$Region <- factor(ied$Region)
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
 write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
+print('woo')
 quit()
 
 # Video
