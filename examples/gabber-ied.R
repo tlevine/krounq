@@ -70,21 +70,22 @@ Incidents are played in the order they occurred.'
       font = 2, family = 'sans')
   df$density <- 5
   df[nrow(df),'density'] <- 20
+  last.row <- df[nrow(df),]
   plot(0, 0, xlim = LONGITUDE, ylim = LATITUDE,
        type = 'n', bty = 'l', asp = 1,
-       main = '', sub = 'Each dot is a visit from Santa.',
+       main = strftime(last.row$date, '%B %d, %Y'),
+       sub = 'Each dot is a visit from Santa.',
        xlab = 'Longitude', ylab = 'Latitude')
 
   points(x = df$Longitude, y = df$Latitude,
-	 cex = (df$kia + df$wia) / 3,
+	 cex = 2 * sqrt(df$kia + df$wia),
 	 col = 0,
          bg = COLORS[df$weekday],
 	 pch = 21
   )
   if (j == 2) {
-    last.row <- df[nrow(df),]
     points(x = last.row$Longitude, y = last.row$Latitude,
-  	 cex = (last.row$kia + last.row$wia) / 3,
+  	 cex = 2 * sqrt(last.row$kia + last.row$wia),
            bg = 'white',
   	 pch = 21
     )
