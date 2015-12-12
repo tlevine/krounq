@@ -105,7 +105,7 @@ p <- function(row)
          rhythm = RHYTHMS[[as.numeric(row$Species)]])
 
 # Subset
-data(iris)
+ied <- read.csv('examples/IED_Data.csv', stringsAsFactors = FALSE)
 # iris <- iris[floor(seq(1, nrow(iris), length.out = 24)),]
 
 is <- order(iris$Petal.Width)
