@@ -85,7 +85,7 @@ Rhythm ~ Species'
   text(x = 0, y = max(LATITUDE), pos = 1,
        label = MAPPINGS, col = COLORS[last.row$weekday])
   text(x = last.row$Longitude, y = last.row$Latitude,
-       label = last.row$Species)
+       label = last.row$weekday)
 }
 
 COLORS <- c(Weekday = 'violet', Friday = 'pink', Saturday = 'cyan')
