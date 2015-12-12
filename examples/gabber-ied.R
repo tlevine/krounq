@@ -74,18 +74,19 @@ Incidents are played in the order they occurred.'
   plot(0, 0, xlim = LONGITUDE, ylim = LATITUDE,
        type = 'n', bty = 'l', asp = 1,
        main = strftime(last.row$date, '%B %d, %Y'),
-       sub = 'Each dot is a visit from Santa.',
+       sub = 'Each dot is an IED ambush.',
        xlab = 'Longitude', ylab = 'Latitude')
 
+  df$cex = 1 + log(max(1, df$kia + df$wia), 2)
   points(x = df$Longitude, y = df$Latitude,
-	 cex = max(1, 4 * sqrt(df$kia + df$wia)),
+	 cex = df$cex,
 	 col = 0,
          bg = COLORS[df$weekday],
 	 pch = 21
   )
   if (j == 1) {
     points(x = last.row$Longitude, y = last.row$Latitude,
-  	 cex = max(1, 4 * sqrt(last.row$kia + last.row$wia)),
+  	 cex = last.row$cex,
            bg = 'white',
   	 pch = 21
     )
