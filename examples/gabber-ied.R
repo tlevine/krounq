@@ -101,11 +101,13 @@ RHYTHMS <- list(
   Saturday = c(1, 3, 5, 7)
 )
 
-p <- function(row)
-  phrase(key = 30, speed = (row$kia + row$wia) / 20,
+p <- function(row) {
+  hurt <- row$kia + row$wia
+  phrase(key = 30, speed = 2 + 4 * (hurt / max(hurt)),
          pickup = scales$major[as.numeric(row$Region)],
-         drums = row$kia + row$wia > 0,
+         drums = (row$kia + row$wia) > 0,
          rhythm = RHYTHMS[[row$weekday]])
+}
 
 # Subset
 ied <- read.csv('examples/IED_Data.csv', stringsAsFactors = FALSE)
