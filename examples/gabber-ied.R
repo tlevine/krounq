@@ -77,7 +77,7 @@ Incidents are played in the order they occurred.'
        sub = 'Each dot is an IED ambush.',
        xlab = 'Longitude', ylab = 'Latitude')
 
-  df$cex = 1 + log(max(1, df$kia + df$wia), 2)
+  df$cex = 1 + 2 * log(pmax(1, df$kia + df$wia), 2)
   points(x = df$Longitude, y = df$Latitude,
 	 cex = df$cex,
 	 col = 0,
@@ -87,7 +87,7 @@ Incidents are played in the order they occurred.'
   if (j == 1) {
     points(x = last.row$Longitude, y = last.row$Latitude,
   	 cex = last.row$cex,
-           bg = 'white',
+         bg = 'white',
   	 pch = 21
     )
   }
