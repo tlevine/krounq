@@ -94,25 +94,31 @@ Rhythm ~ Species'
 
 COLORS <- c(setosa = 'violet', virginica = 'pink', versicolor = 'cyan')
 
-RHYTHMS <- list(c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
-                c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5),
-                c(1, 3, 5, 7), 1:8)
+RHYTHMS <- list(
+  'RC CAPITAL' = c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
+  'RC EAST' = c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5),
+  'RC NORTH' = c(1, 3, 5, 7), 1:8)
+  'RC SOUTH' =
+  'RC WEST' =
+  'UNKNOWN' = 
 
 p <- function(row)
-  phrase(key = 30, speed = row$Sepal.Length - 1,
-         pickup = scales$major[round(row$Sepal.Width - 1)],
-         drums = row$Petal.Length > 3,
-         rhythm = RHYTHMS[[as.numeric(row$Species)]])
+  phrase(key = 30, speed = (row$kia + row$wia) / 20,
+         pickup = scales$major[round(row$Sepal.Width / 10 - 1)],
+         drums = row$kia / (row$kia + row$wia) > 1/3,
+         rhythm = RHYTHMS[[row$Region]])
 
 # Subset
 ied <- read.csv('examples/IED_Data.csv', stringsAsFactors = FALSE)
-# iris <- iris[floor(seq(1, nrow(iris), length.out = 24)),]
-
-is <- order(iris$Petal.Width)
+ied$wia <- rowSums(ied[c("FriendlyWIA", "HostNationWIA", "EnemyWIA", "CivilianWIA")])
+ied$kia <- rowSums(ied[c("FriendlyKIA", "HostNationKIA", "EnemyKIA", "CivilianKIA")])
+ied$date <- strptime(ied$DateOccurred, '%m/%d/%y 0:00')
+ied$friday <- weekdays(ied$date) == 'Friday'
 
 # Music
-song <- do.call(c,lapply(is, function(i) p(iris[i,])))
+song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
 write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
+quit()
 
 # Video
 for (i in 1:nrow(iris)) {
