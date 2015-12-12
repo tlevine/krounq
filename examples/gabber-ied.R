@@ -54,13 +54,13 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
   2.5 * pounding + melody
 }
 
-frame <- function(df, j) {
+frame <- function(df) {
   LONGITUDE <- c(61, 74)
   LATITUDE <- c(29, 39)
 
   MAPPINGS <- 'Speed ~ Deaths
 Pickup note pitch ~ Region
-Drums ~ More than twice as many wounded as killed
+Drums ~ More killed than wounded
 Rhythm ~ Day of week
 
 Incidents are played in the order they occurred.'
@@ -72,33 +72,20 @@ Incidents are played in the order they occurred.'
   df[nrow(df),'density'] <- 20
   plot(0, 0, xlim = LONGITUDE, ylim = LATITUDE,
        type = 'n', bty = 'l', asp = 1,
-       main = '', sub = 'Each dot is a visit from Santa. Squares... triangles',
+       main = '', sub = 'Each dot is a visit from Santa.',
        xlab = 'Longitude', ylab = 'Latitude')
 
-  jitter <- round(30 * (1:nrow(df) / nrow(df)))
   points(x = df$Longitude, y = df$Latitude,
-	 cex = (df$kia + df$wia) / 10,
+	 cex = (df$kia + df$wia) / 3,
 	 col = 0,
          bg = COLORS[df$weekday],
 	 pch = 21
   )
   last.row <- df[nrow(df),]
-# text(x = 0, y = max(LATITUDE), pos = 1,
-# #    label = MAPPINGS,
-#      col = COLORS[last.row$weekday])
-# text(x = last.row$Longitude, y = last.row$Latitude,
-#      label = strftime(last.row$date, '%B %d, %Y'))
   points(x = last.row$Longitude, y = last.row$Latitude,
-	 cex = (if (j) df$wia else df$kia) / 10,
-	 col = 0,
+	 cex = (last.row$kia + last.row$wia) / 3,
          bg = 'white',
-	 pch = 22
-  )
-  points(x = last.row$Longitude, y = last.row$Latitude,
-	 cex = (if (j) df$kia else df$wia) / 10,
-	 col = 0,
-         bg = 'white',
-	 pch = 23
+	 pch = 21
   )
 }
 
@@ -113,7 +100,7 @@ RHYTHMS <- list(
 p <- function(row)
   phrase(key = 30, speed = (row$kia + row$wia) / 20,
          pickup = scales$major[as.numeric(row$Region)],
-         drums = row$kia + row$wia > 1 && (row$kia / (row$kia + row$wia)) > 1/3,
+         drums = row$kia > row$wia,
          rhythm = RHYTHMS[[row$weekday]])
 
 # Subset
@@ -126,8 +113,7 @@ ied$weekday[is.na(ied$weekday)] <- 'Weekday'
 ied$kia[is.na(ied$kia)] <- 0
 ied$wia[is.na(ied$wia)] <- 0
 ied$Region <- factor(ied$Region)
-ied <- subset(ied, Region == 'RC CAPITAL')
-ied <- tail(ied, 100)
+ied <- subset(ied, Category == 'IED Ambush')
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
@@ -136,9 +122,7 @@ write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
 # Video
 png('/tmp/krounq-%03d.png', width = 800, height = 450)
 for (i in 1:nrow(ied)) {
-  for (j in 0:1) {
-    frame(ied[1:i,], j)
-  }
+  frame(ied[1:i,])
 }
 dev.off()
 
