@@ -76,17 +76,16 @@ Rhythm ~ Species'
 
   jitter <- round(30 * (1:nrow(df) / nrow(df)))
   points(x = df$Longitude, y = df$Latitude,
-	 size = if (j) df$kia else df$wia,
+	 size = 8 * (if (j) df$kia else df$wia),
          col = COLORS[df$weekday],
-         border = NA,
-         density = df$density,
-         angle = (df$Category == 'IED Ambush') * 15 + jitter - 45 * j)
+	 pch = (df$Category == 'IED Ambush') + 1
+  )
   last.row <- df[nrow(df),]
   text(x = 0, y = max(LATITUDE), pos = 1,
   #    label = MAPPINGS,
        col = COLORS[last.row$weekday])
   text(x = last.row$Longitude, y = last.row$Latitude,
-       label = last.row$weekday)
+       label = strftime(last.row$date, '%B %d, %Y'))
 }
 
 COLORS <- c(Weekday = 'violet', Friday = 'pink', Saturday = 'cyan')
