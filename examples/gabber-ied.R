@@ -116,6 +116,7 @@ ied$weekday[is.na(ied$weekday)] <- 'Weekday'
 ied$kia[is.na(ied$kia)] <- 0
 ied$wia[is.na(ied$wia)] <- 0
 ied$Region <- factor(ied$Region)
+ied <- subset(ied, Region == 'RC CAPITAL')
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
