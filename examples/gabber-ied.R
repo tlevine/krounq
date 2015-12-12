@@ -54,7 +54,7 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
   2.5 * pounding + melody
 }
 
-frame <- function(df) {
+frame <- function(df, j) {
   LONGITUDE <- c(61, 74)
   LATITUDE <- c(29, 39)
 
@@ -81,12 +81,14 @@ Incidents are played in the order they occurred.'
          bg = COLORS[df$weekday],
 	 pch = 21
   )
-  last.row <- df[nrow(df),]
-  points(x = last.row$Longitude, y = last.row$Latitude,
-	 cex = (last.row$kia + last.row$wia) / 3,
-         bg = 'white',
-	 pch = 21
-  )
+  if (j == 2) {
+    last.row <- df[nrow(df),]
+    points(x = last.row$Longitude, y = last.row$Latitude,
+  	 cex = (last.row$kia + last.row$wia) / 3,
+           bg = 'white',
+  	 pch = 21
+    )
+  }
 }
 
 COLORS <- c(Weekday = '#FF000030', Friday = '#00FF0030', Saturday = '#0000FF30')
@@ -122,7 +124,9 @@ write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
 # Video
 png('/tmp/krounq-%03d.png', width = 800, height = 450)
 for (i in 1:nrow(ied)) {
-  frame(ied[1:i,])
+  for (j in 1:2) {
+    frame(ied[1:i,])
+  }
 }
 dev.off()
 
