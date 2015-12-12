@@ -60,9 +60,9 @@ frame <- function(df, j) {
 
   MAPPINGS <- 'Speed ~ Deaths
 Pickup note pitch ~ Region
-Drums ~ More killed than wounded
 Rhythm ~ Day of week
 
+Drums play for IEDs that killed people.
 Incidents are played in the order they occurred.'
 
   par(bg = 'black', fg = 'white', col = 'white', col.axis = 'white',
@@ -78,14 +78,14 @@ Incidents are played in the order they occurred.'
        xlab = 'Longitude', ylab = 'Latitude')
 
   points(x = df$Longitude, y = df$Latitude,
-	 cex = 2 * sqrt(df$kia + df$wia),
+	 cex = max(1, 4 * sqrt(df$kia + df$wia)),
 	 col = 0,
          bg = COLORS[df$weekday],
 	 pch = 21
   )
   if (j == 2) {
     points(x = last.row$Longitude, y = last.row$Latitude,
-  	 cex = 2 * sqrt(last.row$kia + last.row$wia),
+  	 cex = max(1, 4 * sqrt(last.row$kia + last.row$wia)),
            bg = 'white',
   	 pch = 21
     )
@@ -103,7 +103,7 @@ RHYTHMS <- list(
 p <- function(row)
   phrase(key = 30, speed = (row$kia + row$wia) / 20,
          pickup = scales$major[as.numeric(row$Region)],
-         drums = row$kia > row$wia,
+         drums = row$kia + row$wia > 0,
          rhythm = RHYTHMS[[row$weekday]])
 
 # Subset
@@ -126,7 +126,7 @@ write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
 png('/tmp/krounq-%03d.png', width = 800, height = 450)
 for (i in 1:nrow(ied)) {
   for (j in 1:2) {
-    frame(ied[1:i,])
+    frame(ied[1:i,], j)
   }
 }
 dev.off()
