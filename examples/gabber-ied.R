@@ -55,7 +55,7 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
 }
 
 frame <- function(df, j) {
-  LONGIUDE <- c(61, 74)
+  LONGITUDE <- c(61, 74)
   LATITUDE <- c(29, 39)
 
   MAPPINGS <- 'Speed ~ Sepal Length
