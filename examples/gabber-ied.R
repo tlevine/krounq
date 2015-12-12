@@ -95,25 +95,24 @@ Rhythm ~ Species'
 COLORS <- c(setosa = 'violet', virginica = 'pink', versicolor = 'cyan')
 
 RHYTHMS <- list(
-  'RC CAPITAL' = c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
-  'RC EAST' = c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5),
-  'RC NORTH' = c(1, 3, 5, 7), 1:8)
-  'RC SOUTH' =
-  'RC WEST' =
-  'UNKNOWN' = 
+  Weekday = c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
+  Friday = c(1, 2, 3, 3 + 2/3, 4 + 1/3, 5, 6, 6.5, 7, 7.5, 8, 8.5),
+  Saturday = c(1, 3, 5, 7)
+)
 
 p <- function(row)
   phrase(key = 30, speed = (row$kia + row$wia) / 20,
          pickup = scales$major[round(row$Sepal.Width / 10 - 1)],
          drums = row$kia / (row$kia + row$wia) > 1/3,
-         rhythm = RHYTHMS[[row$Region]])
+         rhythm = RHYTHMS[[row$weekday]])
 
 # Subset
 ied <- read.csv('examples/IED_Data.csv', stringsAsFactors = FALSE)
 ied$wia <- rowSums(ied[c("FriendlyWIA", "HostNationWIA", "EnemyWIA", "CivilianWIA")])
 ied$kia <- rowSums(ied[c("FriendlyKIA", "HostNationKIA", "EnemyKIA", "CivilianKIA")])
 ied$date <- strptime(ied$DateOccurred, '%m/%d/%y 0:00')
-ied$friday <- weekdays(ied$date) == 'Friday'
+ied$weekday <- factor(weekdays(ied$date), levels = c('Weekday', 'Friday', 'Saturday'))
+ied$weekday[is.na(ied$weekday)] <- 'Weekday'
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
