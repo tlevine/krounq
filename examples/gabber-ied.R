@@ -83,7 +83,8 @@ Rhythm ~ Species'
          angle = (df$Category == 'IED Ambush') * 15 + jitter - 45 * j)
   last.row <- df[nrow(df),]
   text(x = 0, y = max(LATITUDE), pos = 1,
-       label = MAPPINGS, col = COLORS[last.row$weekday])
+  #    label = MAPPINGS,
+       col = COLORS[last.row$weekday])
   text(x = last.row$Longitude, y = last.row$Latitude,
        label = last.row$weekday)
 }
