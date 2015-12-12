@@ -72,24 +72,37 @@ Incidents are played in the order they occurred.'
   df[nrow(df),'density'] <- 20
   plot(0, 0, xlim = LONGITUDE, ylim = LATITUDE,
        type = 'n', bty = 'l', asp = 1,
-       main = '', sub = 'Rectangles are sepal sizes.',
+       main = '', sub = 'Each dot is a visit from Santa. Squares... triangles',
        xlab = 'Longitude', ylab = 'Latitude')
 
   jitter <- round(30 * (1:nrow(df) / nrow(df)))
   points(x = df$Longitude, y = df$Latitude,
-	 cex = 8 * (if (j) df$kia else df$wia),
-         col = COLORS[df$weekday],
-	 pch = (df$Category == 'IED Ambush') + 1
+	 cex = (df$kia + df$wia),
+	 col = 0,
+         bg = COLORS[df$weekday],
+	 pch = 21
   )
   last.row <- df[nrow(df),]
-  text(x = 0, y = max(LATITUDE), pos = 1,
-  #    label = MAPPINGS,
-       col = COLORS[last.row$weekday])
-  text(x = last.row$Longitude, y = last.row$Latitude,
-       label = strftime(last.row$date, '%B %d, %Y'))
+# text(x = 0, y = max(LATITUDE), pos = 1,
+# #    label = MAPPINGS,
+#      col = COLORS[last.row$weekday])
+# text(x = last.row$Longitude, y = last.row$Latitude,
+#      label = strftime(last.row$date, '%B %d, %Y'))
+  points(x = last.row$Longitude, y = last.row$Latitude,
+	 cex = (if (j) df$wia else df$kia),
+	 col = 0,
+         bg = 'white',
+	 pch = 22
+  )
+  points(x = last.row$Longitude, y = last.row$Latitude,
+	 cex = (if (j) df$kia else df$wia),
+	 col = 0,
+         bg = 'white',
+	 pch = 23
+  )
 }
 
-COLORS <- c(Weekday = 'violet', Friday = 'pink', Saturday = 'cyan')
+COLORS <- c(Weekday = '#FF000030', Friday = '#00FF0030', Saturday = '#0000FF30')
 
 RHYTHMS <- list(
   Weekday = c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
@@ -114,6 +127,7 @@ ied$kia[is.na(ied$kia)] <- 0
 ied$wia[is.na(ied$wia)] <- 0
 ied$Region <- factor(ied$Region)
 ied <- subset(ied, Region == 'RC CAPITAL')
+ied <- head(ied, 100)
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
