@@ -60,8 +60,8 @@ frame <- function(df, j) {
 
   MAPPINGS <- 'Speed ~ Sepal Length
 Pickup note ~ Sepal Width
-Time ~ Petal Width
-Drums ~ Petal Length > 3
+Time ~ Latitude
+Drums ~ Longitude > 3
 Rhythm ~ Species'
 
   par(bg = 'black', fg = 'white', col = 'white', col.axis = 'white',
@@ -72,7 +72,7 @@ Rhythm ~ Species'
   plot(0, 0, xlim = LONGITUDE, ylim = LATITUDE,
        type = 'n', bty = 'l', asp = 1,
        main = '', sub = 'Rectangles are sepal sizes.',
-       xlab = 'Petal Length', ylab = 'Petal Width')
+       xlab = 'Longitude', ylab = 'Latitude')
 
   jitter <- round(30 * (1:nrow(df) / nrow(df)))
   points(x = df$Longitude, y = df$Latitude,
@@ -83,8 +83,8 @@ Rhythm ~ Species'
          angle = (df$Category == 'IED Ambush') * 15 + jitter - 45 * j)
   last.row <- df[nrow(df),]
   text(x = 0, y = max(LATITUDE), pos = 1,
-       label = MAPPINGS, col = COLORS[last.row$Species])
-  text(x = last.row$Petal.Length, y = last.row$Petal.Width,
+       label = MAPPINGS, col = COLORS[last.row$weekday])
+  text(x = last.row$Longitude, y = last.row$Latitude,
        label = last.row$Species)
 }
 
