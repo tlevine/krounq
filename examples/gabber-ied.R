@@ -58,11 +58,12 @@ frame <- function(df, j) {
   LONGITUDE <- c(61, 74)
   LATITUDE <- c(29, 39)
 
-  MAPPINGS <- 'Speed ~ Sepal Length
-Pickup note ~ Sepal Width
-Time ~ Latitude
-Drums ~ Longitude > 3
-Rhythm ~ Species'
+  MAPPINGS <- 'Speed ~ Deaths
+Pickup note pitch ~ Region
+Drums ~ More than twice as many wounded as killed
+Rhythm ~ Day of week
+
+Incidents are played in the order they occurred.'
 
   par(bg = 'black', fg = 'white', col = 'white', col.axis = 'white',
       col.main = 'white', col.sub = 'white', col.lab = 'white',
@@ -76,7 +77,7 @@ Rhythm ~ Species'
 
   jitter <- round(30 * (1:nrow(df) / nrow(df)))
   points(x = df$Longitude, y = df$Latitude,
-	 size = 8 * (if (j) df$kia else df$wia),
+	 cex = 8 * (if (j) df$kia else df$wia),
          col = COLORS[df$weekday],
 	 pch = (df$Category == 'IED Ambush') + 1
   )
