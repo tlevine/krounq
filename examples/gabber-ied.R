@@ -77,7 +77,7 @@ Incidents are played in the order they occurred.'
 
   jitter <- round(30 * (1:nrow(df) / nrow(df)))
   points(x = df$Longitude, y = df$Latitude,
-	 cex = (df$kia + df$wia),
+	 cex = (df$kia + df$wia) / 10,
 	 col = 0,
          bg = COLORS[df$weekday],
 	 pch = 21
@@ -89,13 +89,13 @@ Incidents are played in the order they occurred.'
 # text(x = last.row$Longitude, y = last.row$Latitude,
 #      label = strftime(last.row$date, '%B %d, %Y'))
   points(x = last.row$Longitude, y = last.row$Latitude,
-	 cex = (if (j) df$wia else df$kia),
+	 cex = (if (j) df$wia else df$kia) / 10,
 	 col = 0,
          bg = 'white',
 	 pch = 22
   )
   points(x = last.row$Longitude, y = last.row$Latitude,
-	 cex = (if (j) df$kia else df$wia),
+	 cex = (if (j) df$kia else df$wia) / 10,
 	 col = 0,
          bg = 'white',
 	 pch = 23
@@ -127,7 +127,7 @@ ied$kia[is.na(ied$kia)] <- 0
 ied$wia[is.na(ied$wia)] <- 0
 ied$Region <- factor(ied$Region)
 ied <- subset(ied, Region == 'RC CAPITAL')
-ied <- head(ied, 100)
+ied <- tail(ied, 100)
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
