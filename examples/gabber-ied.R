@@ -55,8 +55,8 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
 }
 
 frame <- function(df, j) {
-  PETAL <- c(-3, 12)
-  SEPAL <- c(-1, 5)
+  LONGIUDE <- c(61, 74)
+  LATITUDE <- c(29, 39)
 
   MAPPINGS <- 'Speed ~ Sepal Length
 Pickup note ~ Sepal Width
@@ -69,30 +69,26 @@ Rhythm ~ Species'
       font = 2, family = 'sans')
   df$density <- 5
   df[nrow(df),'density'] <- 20
-  plot(0, 0, xlim = PETAL, ylim = SEPAL,
+  plot(0, 0, xlim = LONGITUDE, ylim = LATITUDE,
        type = 'n', bty = 'l', asp = 1,
        main = '', sub = 'Rectangles are sepal sizes.',
        xlab = 'Petal Length', ylab = 'Petal Width')
 
   jitter <- round(30 * (1:nrow(df) / nrow(df)))
-  rect(xleft   = df$Petal.Length - 0.5 * df$Sepal.Length,
-       xright  = df$Petal.Length + 0.5 * df$Sepal.Length,
-       ytop    = df$Petal.Width - 0.5 * df$Sepal.Width,
-       ybottom = df$Petal.Width + 0.5 * df$Sepal.Width,
-       col = COLORS[df$Species],
-       border = NA,
-       density = df$density,
-       angle = as.numeric(df$Species) * 15 + jitter - 45 * j)
+  points(x = df$Longitude, y = df$Latitude,
+	 size = if (j) df$kia else df$wia,
+         col = COLORS[df$weekday],
+         border = NA,
+         density = df$density,
+         angle = (df$Category == 'IED Ambush') * 15 + jitter - 45 * j)
   last.row <- df[nrow(df),]
-  text(x = 0, y = max(SEPAL), pos = 1,
+  text(x = 0, y = max(LATITUDE), pos = 1,
        label = MAPPINGS, col = COLORS[last.row$Species])
   text(x = last.row$Petal.Length, y = last.row$Petal.Width,
        label = last.row$Species)
-# text(x = 0, y = 5,
-#      label = paste0('Frame ', nrow(df), '-', j, '\n'))
 }
 
-COLORS <- c(setosa = 'violet', virginica = 'pink', versicolor = 'cyan')
+COLORS <- c(Weekday = 'violet', Friday = 'pink', Saturday = 'cyan')
 
 RHYTHMS <- list(
   Weekday = c(1, 2, 3, 4.5, 5, 6, 7, 8, 8.5),
@@ -124,9 +120,9 @@ write.wave(wave(song), '/tmp/krounq.wav', do.normalize = TRUE)
 
 # Video
 png('/tmp/krounq-%03d.png', width = 800, height = 450)
-for (i in 1:nrow(iris)) {
+for (i in 1:nrow(ied)) {
   for (j in 0:1) {
-    frame(iris[1:i,], j)
+    frame(ied[1:i,], j)
   }
 }
 dev.off()
