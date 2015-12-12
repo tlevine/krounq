@@ -36,6 +36,7 @@ rim <- sample.instrument(norm(roland$RIM@left))
 phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
                    rhythm = c(1, 4)) {
   base.duration <- 2 ^ (4 - floor(speed))
+# print(base.duration)
 
   pounding <- sequence(durations = base.duration,
                        instrument = if (drums) snare else rim,
@@ -103,7 +104,7 @@ RHYTHMS <- list(
 
 p <- function(row) {
   hurt <- row$kia + row$wia
-  phrase(key = 30, speed = 2 + 4 * (hurt / max(hurt)),
+  phrase(key = 30, speed = 2 + 4 * (hurt / 200),
          pickup = scales$major[as.numeric(row$Region)],
          drums = (row$kia + row$wia) > 0,
          rhythm = RHYTHMS[[row$weekday]])
