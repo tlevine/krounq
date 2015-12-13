@@ -36,13 +36,12 @@ rim <- sample.instrument(norm(roland$RIM@left))
 phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
                    rhythm = c(1, 4)) {
   base.duration <- 2 ^ (4 - floor(speed))
-# print(base.duration)
 
   pounding <- sequence(durations = base.duration,
                        instrument = if (drums) snare else rim,
                        tempo = TEMPO, beats = 8)
 
-  if (TRUE) { #drums) {
+  if (drums) {
     rhythm <- c(1, 2, 2.5, 3, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8)
     freq <- P.n(49 + c((12 + scales$major[c(1, 2, 3, 4, 3, 2, 1, 2, 1)]), scales$major[c(6, 5, 4)]))
   } else {
