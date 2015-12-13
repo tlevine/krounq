@@ -57,7 +57,7 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
                      tempo = TEMPO,
                      beats = 8)
 
-  1 * pounding + melody
+  2 * pounding + melody
 }
 
 
@@ -71,28 +71,32 @@ frame <- function(df, j) {
   LONGITUDE <- c(61, 74)
   LATITUDE <- c(29, 39)
 
-  MAPPINGS <- 'Speed ~ Deaths
+  MAPPINGS <- 'Speed ~ Rolling average days between attacks
 Pickup note pitch ~ Region
 Rhythm ~ Day of week
 
-Drums play for IEDs that killed people.
+Drums and jingles play for IEDs that killed more than they wounded.
 Incidents are played in the order they occurred.'
 
   df$density <- 5
   df[nrow(df),'density'] <- 20
   last.row <- df[nrow(df),]
-  last.gallup.row <- tail(subset(gallup, date <= as.Date(last.row$date)), 1)
-  bg <- rgb(last.gallup.row$mistake/6, (1 - last.gallup.row$mistake)/6, 0)
+# last.gallup.row <- tail(subset(gallup, date <= as.Date(last.row$date)), 1)
+# bg <- rgb(last.gallup.row$mistake/6, (1 - last.gallup.row$mistake)/6, 0)
+# if (length(bg) == 0)
+    bg <- 'black'
   par(bg = bg, fg = 'white', col = 'white', col.axis = 'white',
       col.main = 'white', col.sub = 'white', col.lab = 'white',
       font = 2, family = 'sans')
+print((last.row))
   plot(0, 0, xlim = LONGITUDE, ylim = LATITUDE,
        type = 'n', axes = FALSE, asp = 1,
-       main = paste('Was it a mistake to send military forces to Afghanistan?',
-		    strftime(last.row$date, '%B %d, %Y'), sep = '\n'),
+#      main = paste('Was it a mistake to send military forces to Afghanistan?',
+#	    strftime(last.row$date, '%A, %B %d, %Y'), sep = '\n'),
+       main = strftime(last.row$date, '%B %d, %Y'),
        sub = 'Each dot is an IED ambush.',
        xlab = '', ylab = '')
-  axis(2, at = LATITUDE, labels = c('No', 'Yes'))
+# axis(2, at = LATITUDE, labels = c('No', 'Yes'))
 
   df$cex = 1 + 2 * log(pmax(1, df$kia + df$wia), 2)
   points(x = df$Longitude, y = df$Latitude,
@@ -108,7 +112,7 @@ Incidents are played in the order they occurred.'
   	 pch = 21
     )
   }
-  text(x = 0, y = max(LATITUDE), pos = 1,
+  text(x = min(LONGITUDE), y = max(LATITUDE), pos = 1,
        label = MAPPINGS, col = 'white')
 }
 
@@ -138,7 +142,7 @@ ied$kia[is.na(ied$kia)] <- 0
 ied$wia[is.na(ied$wia)] <- 0
 ied$Region <- factor(ied$Region)
 ied <- subset(ied, Category == 'IED Ambush')
-ied <- tail(ied, 20)
+# ied <- tail(ied, 20)
 ied$RollingAVG[is.na(ied$RollingAVG)] <- mean(ied$RollingAVG)
 
 # Music
