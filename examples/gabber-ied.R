@@ -64,10 +64,8 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
 gallup <- read.csv('examples/gallup_afghanpoll.csv', stringsAsFactors = FALSE)[1:3]
 gallup$date <- as.Date(gallup$Date) 
 gallup <- subset(gallup, !is.na(date))
-gallup$mistake <- gallup[,2] / colSums(gallup[2:3])
-gallup$longitude <- as.numeric(gallup$date - min(gallup$date)) / as.numeric(max(gallup$date) - min(gallup$date))
-gallup$mistake <- gallup$mistake * 10 + 29
-gallup$longitude <- gallup$longitude * 13 + 61
+gallup$mistake <- gallup[,2] / rowSums(gallup[2:3])
+gallup <- gallup[order(gallup$date),]
 
 frame <- function(df, j) {
   LONGITUDE <- c(61, 74)
@@ -80,18 +78,24 @@ Rhythm ~ Day of week
 Drums play for IEDs that killed people.
 Incidents are played in the order they occurred.'
 
-  par(bg = 'black', fg = 'white', col = 'white', col.axis = 'white',
-      col.main = 'white', col.sub = 'white', col.lab = 'white',
-      font = 2, family = 'sans')
   df$density <- 5
   df[nrow(df),'density'] <- 20
   last.row <- df[nrow(df),]
-  plot(mistake ~ longitude, xlim = LONGITUDE, ylim = LATITUDE,
-       data = subset(gallup, date <= last.row$date),
-       type = 'l', axes = FALSE, asp = 1, col = 'white',
-       main = strftime(last.row$date, '%B %d, %Y'),
+str(last.row$date)
+str(gallup$date[1])
+  last.gallup.row <- tail(subset(gallup, date <= as.Date(last.row$date)), 1)
+print(last.gallup.row)
+  bg <- rgb(last.gallup.row$mistake, 1 - last.gallup.row$mistake, 0)
+print(bg)
+  par(bg = bg, fg = 'white', col = 'white', col.axis = 'white',
+      col.main = 'white', col.sub = 'white', col.lab = 'white',
+      font = 2, family = 'sans')
+  plot(0, 0, xlim = LONGITUDE, ylim = LATITUDE,
+       type = 'n', axes = FALSE, asp = 1,
+       main = paste('Was it a mistake to send military forces to Afghanistan?',
+		    strftime(last.row$date, '%B %d, %Y'), sep = '\n'),
        sub = 'Each dot is an IED ambush.',
-       xlab = '', ylab = '"Gallup poll:\nWas it a mistake to send military forces to Afghanistan?"')
+       xlab = '', ylab = '')
   axis(2, at = LATITUDE, labels = c('No', 'Yes'))
 
   df$cex = 1 + 2 * log(pmax(1, df$kia + df$wia), 2)
@@ -135,7 +139,7 @@ ied$kia[is.na(ied$kia)] <- 0
 ied$wia[is.na(ied$wia)] <- 0
 ied$Region <- factor(ied$Region)
 ied <- subset(ied, Category == 'IED Ambush')
-ied <- head(ied, 20)
+ied <- tail(ied, 20)
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
