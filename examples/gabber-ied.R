@@ -82,7 +82,7 @@ Incidents are played in the order they occurred.'
   df[nrow(df),'density'] <- 20
   last.row <- df[nrow(df),]
   last.gallup.row <- tail(subset(gallup, date <= as.Date(last.row$date)), 1)
-  bg <- rgb(last.gallup.row$mistake/2, (1 - last.gallup.row$mistake)/2, 0)
+  bg <- rgb(last.gallup.row$mistake/6, (1 - last.gallup.row$mistake)/6, 0)
   par(bg = bg, fg = 'white', col = 'white', col.axis = 'white',
       col.main = 'white', col.sub = 'white', col.lab = 'white',
       font = 2, family = 'sans')
@@ -108,6 +108,8 @@ Incidents are played in the order they occurred.'
   	 pch = 21
     )
   }
+  text(x = 0, y = max(LATITUDE), pos = 1,
+       label = MAPPINGS, col = 'white')
 }
 
 COLORS <- c(Weekday = '#FF000030', Friday = '#00FF0030', Saturday = '#0000FF30')
