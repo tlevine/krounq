@@ -120,11 +120,12 @@ RHYTHMS <- list(
   Saturday = c(1, 3, 5, 7)
 )
 
-p <- function(row)
-  phrase(key = 31, speed = 5,
+p <- function(row) {
+  phrase(key = 31, speed = if (is.na(row$RollingAVG)) 4 else row$RollingAVG,
          pickup = scales$major[as.numeric(row$Region)],
          drums = row$kia > row$wia,
          rhythm = RHYTHMS[[row$weekday]])
+}
 
 # Subset
 ied <- read.csv('examples/IED_Data.csv', stringsAsFactors = FALSE)
@@ -137,6 +138,8 @@ ied$kia[is.na(ied$kia)] <- 0
 ied$wia[is.na(ied$wia)] <- 0
 ied$Region <- factor(ied$Region)
 ied <- subset(ied, Category == 'IED Ambush')
+ied <- tail(ied, 20)
+ied$RollingAVG[is.na(ied$RollingAVG)] <- mean(ied$RollingAVG)
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
