@@ -42,10 +42,16 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
                        instrument = if (drums) snare else rim,
                        tempo = TEMPO, beats = 8)
 
-  f <- rep(key, length(rhythm))
-  if (!is.null(pickup) && length(pickup) > 0)
-    f[floor(rhythm) %% 4 == 0] <- key + pickup
-  melody <- sequence(frequencies = P.n(f),
+  if (drums) {
+    rhythm <- c(1, 2, 2.5, 3, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8)
+    freq <- 49 + (12 + scales$major[c(1, 2, 3, 4, 3, 2, 1, 2, 1)]) + scales$major[c(6, 5, 4)]
+  } else {
+    f <- rep(key, length(rhythm))
+    if (!is.null(pickup) && length(pickup) > 0)
+      f[floor(rhythm) %% 4 == 0] <- key + pickup
+    freq <- P.n(f)
+  }
+  melody <- sequence(frequencies = freq,
                      starts = rhythm,
                      durations = 0.5,
                      instrument = drumlike,
@@ -103,7 +109,7 @@ RHYTHMS <- list(
 )
 
 p <- function(row)
-  phrase(key = 30, speed = 5,
+  phrase(key = 31, speed = 5,
          pickup = scales$major[as.numeric(row$Region)],
          drums = row$kia > row$wia,
          rhythm = RHYTHMS[[row$weekday]])
