@@ -81,12 +81,8 @@ Incidents are played in the order they occurred.'
   df$density <- 5
   df[nrow(df),'density'] <- 20
   last.row <- df[nrow(df),]
-str(last.row$date)
-str(gallup$date[1])
   last.gallup.row <- tail(subset(gallup, date <= as.Date(last.row$date)), 1)
-print(last.gallup.row)
-  bg <- rgb(last.gallup.row$mistake, 1 - last.gallup.row$mistake, 0)
-print(bg)
+  bg <- rgb(last.gallup.row$mistake/2, (1 - last.gallup.row$mistake)/2, 0)
   par(bg = bg, fg = 'white', col = 'white', col.axis = 'white',
       col.main = 'white', col.sub = 'white', col.lab = 'white',
       font = 2, family = 'sans')
@@ -139,7 +135,6 @@ ied$kia[is.na(ied$kia)] <- 0
 ied$wia[is.na(ied$wia)] <- 0
 ied$Region <- factor(ied$Region)
 ied <- subset(ied, Category == 'IED Ambush')
-ied <- tail(ied, 20)
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
