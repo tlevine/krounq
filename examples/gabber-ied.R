@@ -42,9 +42,9 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
                        instrument = if (drums) snare else rim,
                        tempo = TEMPO, beats = 8)
 
-  if (drums) {
+  if (TRUE) { #drums) {
     rhythm <- c(1, 2, 2.5, 3, 4, 4.5, 5, 5.5, 6, 6.5, 7, 8)
-    freq <- 49 + (12 + scales$major[c(1, 2, 3, 4, 3, 2, 1, 2, 1)]) + scales$major[c(6, 5, 4)]
+    freq <- P.n(49 + c((12 + scales$major[c(1, 2, 3, 4, 3, 2, 1, 2, 1)]), scales$major[c(6, 5, 4)]))
   } else {
     f <- rep(key, length(rhythm))
     if (!is.null(pickup) && length(pickup) > 0)
@@ -58,7 +58,7 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
                      tempo = TEMPO,
                      beats = 8)
 
-  2.5 * pounding + melody
+  1 * pounding + melody
 }
 
 frame <- function(df, j) {
