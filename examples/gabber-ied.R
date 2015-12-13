@@ -66,6 +66,8 @@ gallup$date <- as.Date(gallup$Date)
 gallup <- subset(gallup, !is.na(date))
 gallup$mistake <- gallup[,2] / colSums(gallup[2:3])
 gallup$longitude <- as.numeric(gallup$date - min(gallup$date)) / as.numeric(max(gallup$date) - min(gallup$date))
+gallup$mistake <- gallup$mistake * 10 + 29
+gallup$longitude <- gallup$longitude * 13 + 61
 
 frame <- function(df, j) {
   LONGITUDE <- c(61, 74)
@@ -84,7 +86,7 @@ Incidents are played in the order they occurred.'
   df$density <- 5
   df[nrow(df),'density'] <- 20
   last.row <- df[nrow(df),]
-  plot(mistake * 10 + 29 ~ date, xlim = LONGITUDE, ylim = LATITUDE,
+  plot(mistake ~ longitude, xlim = LONGITUDE, ylim = LATITUDE,
        data = subset(gallup, date <= last.row$date),
        type = 'l', axes = FALSE, asp = 1, col = 'white',
        main = strftime(last.row$date, '%B %d, %Y'),
@@ -133,6 +135,7 @@ ied$kia[is.na(ied$kia)] <- 0
 ied$wia[is.na(ied$wia)] <- 0
 ied$Region <- factor(ied$Region)
 ied <- subset(ied, Category == 'IED Ambush')
+ied <- head(ied, 20)
 
 # Music
 song <- do.call(c,lapply(1:nrow(ied), function(i) p(ied[i,])))
