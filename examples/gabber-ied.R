@@ -60,6 +60,13 @@ phrase <- function(key = 30, speed = 0, pickup = NULL, drums = TRUE,
   1 * pounding + melody
 }
 
+
+gallup <- read.csv('examples/gallup_afghanpoll.csv', stringsAsFactors = FALSE)[1:3]
+gallup$date <- as.Date(gallup$Date) 
+gallup <- subset(gallup, !is.na(date))
+gallup$mistake <- gallup[,2] / colSums(gallup[2:3])
+gallup$longitude <- as.numeric(gallup$date - min(gallup$date)) / as.numeric(max(gallup$date) - min(gallup$date))
+
 frame <- function(df, j) {
   LONGITUDE <- c(61, 74)
   LATITUDE <- c(29, 39)
@@ -77,11 +84,13 @@ Incidents are played in the order they occurred.'
   df$density <- 5
   df[nrow(df),'density'] <- 20
   last.row <- df[nrow(df),]
-  plot(0, 0, xlim = LONGITUDE, ylim = LATITUDE,
-       type = 'n', bty = 'l', asp = 1,
+  plot(mistake * 10 + 29 ~ date, xlim = LONGITUDE, ylim = LATITUDE,
+       data = subset(gallup, date <= last.row$date),
+       type = 'l', axes = FALSE, asp = 1, col = 'white',
        main = strftime(last.row$date, '%B %d, %Y'),
        sub = 'Each dot is an IED ambush.',
-       xlab = 'Longitude', ylab = 'Latitude')
+       xlab = '', ylab = '"Gallup poll:\nWas it a mistake to send military forces to Afghanistan?"')
+  axis(2, at = LATITUDE, labels = c('No', 'Yes'))
 
   df$cex = 1 + 2 * log(pmax(1, df$kia + df$wia), 2)
   points(x = df$Longitude, y = df$Latitude,
